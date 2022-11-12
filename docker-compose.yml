@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  nest:
+    build: ./api
+    tty: true
+    ports:
+      - '3000:3000'
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15.0-alpine
+    ports:
+      - '65432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+    volumes:
+      - merch_psgrs:/var/lib/postgresql/data
+
+  next:
+    build: ./front
+    tty: true
+    ports:
+      - '3001:3001'
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    depends_on:
+      - postgres
+
+volumes:
+  merch_psgrs:

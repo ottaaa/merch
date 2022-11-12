@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  tf:
+    build: ./
+    tty: true
+    volumes:
+      - type: bind
+        source: .
+        target: /infra
