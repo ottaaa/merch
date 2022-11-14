@@ -6,7 +6,7 @@ import * as pack from '../package.json';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.setGlobalPrefix('app');
+  app.setGlobalPrefix('api');
 
   const config = new DocumentBuilder()
     .setTitle('物販(仮) Document')
