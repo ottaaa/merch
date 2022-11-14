@@ -1,0 +1,104 @@
+openapi: 3.0.0
+paths:
+  /api/items:
+    get:
+      operationId: ItemsController_findAll
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseItemsDto'
+      tags:
+        - items
+    post:
+      operationId: ItemsController_makeItem
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateItemDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseItemDto'
+      tags:
+        - items
+info:
+  title: 物販(仮) Document
+  description: 物販(仮) の API リファレンスです
+  version: 0.0.1
+  contact: {}
+tags: []
+servers: []
+components:
+  schemas:
+    ItemEntity:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        price:
+          type: number
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+      required:
+        - id
+        - name
+        - price
+        - createdAt
+        - updatedAt
+    ResponseItemsDto:
+      type: object
+      properties:
+        items:
+          example:
+            - id: 1
+              name: バイサマ Tee
+              price: 3000
+              createdAt: '2022-11-14T14:04:02.063Z'
+              updatedAt: '2022-11-14T14:04:02.063Z'
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemEntity'
+      required:
+        - items
+    CreateItemDto:
+      type: object
+      properties:
+        name:
+          type: string
+          example: バイサマ CD
+        price:
+          type: number
+          example: 800
+      required:
+        - name
+        - price
+    ResponseItemDto:
+      type: object
+      properties:
+        item:
+          example:
+            id: 1
+            name: 5kai Tee
+            price: 3000
+            createdAt: '2022-11-14T14:04:02.063Z'
+            updatedAt: '2022-11-14T14:04:02.063Z'
+          allOf:
+            - $ref: '#/components/schemas/ItemEntity'
+      required:
+        - item
