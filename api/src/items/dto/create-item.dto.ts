@@ -2,12 +2,12 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateItemDto {
   @ApiProperty({
-    example: 'バイサマ CD',
+    example: 'CD',
   })
   name: string;
 
   @ApiProperty({
-    example: 800,
+    example: 1000,
   })
   price: number;
 }

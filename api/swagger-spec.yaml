@@ -67,7 +67,7 @@ components:
         items:
           example:
             - id: 1
-              name: バイサマ Tee
+              name: Tシャツ
               price: 3000
               createdAt: '2022-11-14T14:04:02.063Z'
               updatedAt: '2022-11-14T14:04:02.063Z'
@@ -81,10 +81,10 @@ components:
       properties:
         name:
           type: string
-          example: バイサマ CD
+          example: CD
         price:
           type: number
-          example: 800
+          example: 1000
       required:
         - name
         - price
@@ -94,8 +94,8 @@ components:
         item:
           example:
             id: 1
-            name: 5kai Tee
-            price: 3000
+            name: Tシャツ
+            price: 2500
             createdAt: '2022-11-14T14:04:02.063Z'
             updatedAt: '2022-11-14T14:04:02.063Z'
           allOf:

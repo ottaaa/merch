@@ -7,8 +7,8 @@ export class ResponseItemDto {
     type: ItemEntity,
     example: {
       id: 1,
-      name: '5kai Tee',
-      price: 3000,
+      name: 'Tシャツ',
+      price: 2500,
       createdAt: '2022-11-14T14:04:02.063Z',
       updatedAt: '2022-11-14T14:04:02.063Z',
     },
@@ -26,7 +26,7 @@ export class ResponseItemsDto {
     example: [
       {
         id: 1,
-        name: 'バイサマ Tee',
+        name: 'Tシャツ',
         price: 3000,
         createdAt: '2022-11-14T14:04:02.063Z',
         updatedAt: '2022-11-14T14:04:02.063Z',
