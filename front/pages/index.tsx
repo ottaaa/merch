@@ -2,20 +2,21 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import React from 'react'
-import {getItems} from './list'
+import {itemsService} from '@/services/api/items'
 
 export const getStaticProps = async () => {
-  const item = await getItems()
+  const res = await itemsService.getItemsList()
+  const items = JSON.parse(JSON.stringify(res.items));
+
   return {
     props: {
-      item: item,
+      items,
     }
   }
 }
 
 export default function Home(props: any){
-  console.log("props")
-  console.log(props.item)
+
     return (
     <div className={styles.container}>
       <Head>
@@ -26,8 +27,8 @@ export default function Home(props: any){
 
       <main className={styles.main}>
         <h1>
-            {props.item.map((item: { id: number, name: string }) => (
-                <div className={styles.card}>{item.id}  {item.name}</div>
+            {props.items.map((item: { id: number, name: string, createdAt: string, updatedAt: string,}) => (
+                <div className={styles.card}>{item.id}{item.name}</div>
             ))}
         </h1>
       </main>
