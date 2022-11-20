@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+  swagger-gen-client:
+    profiles:
+      - tools
+    image: openapitools/openapi-generator-cli:latest
+    volumes:
+      - type: bind
+        source: ../
+        target: /app
+    command: generate -i /app/api/swagger-spec.yaml -o /app/front/gen -g typescript-fetch --additional-properties=modelPropertyNaming=camelCase,supportsES6=true,typescriptThreePlus=true,withInterfaces=true --type-mappings=date=string,DateTime=string
+

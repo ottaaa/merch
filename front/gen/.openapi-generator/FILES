@@ -1,0 +1,11 @@
+.openapi-generator-ignore
+apis/ItemsApi.ts
+apis/index.ts
+index.ts
+models/CreateItemDto.ts
+models/ItemEntity.ts
+models/ResponseItemDto.ts
+models/ResponseItemDtoItem.ts
+models/ResponseItemsDto.ts
+models/index.ts
+runtime.ts
