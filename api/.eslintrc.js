@@ -1,27 +1,43 @@
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: 'tsconfig.json',
-    tsconfigRootDir: __dirname,
+    ecmaVersion: 'latest',
+    project: './tsconfig.json',
     sourceType: 'module',
+    tsconfigRootDir: __dirname,
   },
-  plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:prettier/recommended',
+    '../.eslintrc.js',
   ],
   root: true,
   env: {
     node: true,
     jest: true,
+    es2022: true,
   },
-  ignorePatterns: ['.eslintrc.js'],
+  ignorePatterns: ['.eslintrc.js', 'dist'],
   rules: {
-    // TODO 別途eslintを調整するprで有効化する
-    // 'no-restricted-imports': ['error', { patterns: ['./', '../'] }],
-    '@typescript-eslint/interface-name-prefix': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
+    'no-restricted-imports': ['error', { patterns: ['./', '../'] }],
+    'no-useless-constructor': 'off',
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin', // 組み込みモジュール
+          'external', // npmでインストールした外部ライブラリ
+          'internal', // 自作モジュール
+          ['parent', 'sibling'],
+          'object',
+          'type',
+          'index',
+        ],
+        alphabetize: {
+          order: 'asc', // 昇順にソート
+        },
+        'newlines-between': 'always',
+      },
+    ],
+    'import/no-duplicates': 'error',
+    'unused-imports/no-unused-imports': 'error',
   },
 };

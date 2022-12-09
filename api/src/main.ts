@@ -1,9 +1,11 @@
+import * as fs from 'fs';
+
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-import * as pack from '../package.json';
-import * as fs from 'fs';
 import { dump } from 'js-yaml';
+
+import * as pack from '../package.json';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,7 +18,7 @@ async function bootstrap() {
     .setVersion(pack.version)
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup("docs", app, document);
+  SwaggerModule.setup('docs', app, document);
 
   fs.writeFileSync('./swagger-spec.yaml', dump(document, {}));
 
