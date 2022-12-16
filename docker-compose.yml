@@ -6,6 +6,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
+      - nest_node_module:/app/api/node_modules
       - type: bind
         source: .
         target: /app
@@ -28,6 +29,7 @@ services:
     ports:
       - '3001:3001'
     volumes:
+      - next_node_module:/app/front/node_modules
       - type: bind
         source: .
         target: /app
@@ -36,3 +38,5 @@ services:
 
 volumes:
   merch_psgrs:
+  nest_node_module:
+  next_node_module:
