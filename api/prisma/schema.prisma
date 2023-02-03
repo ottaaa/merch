@@ -24,7 +24,8 @@ model User {
 
 model Shop {
   id      Int      @id @default(autoincrement())
-  items   Item[]
+  name    String
+  merches Merch[]
   sellers Seller[]
   sales   Sale[]
 }
@@ -39,8 +40,8 @@ model Seller {
   @@id([userId, shopId])
 }
 
-model Item {
-  id          Int        @id @default(autoincrement())
+model Merch {
+  id          String     @id @default(uuid()) @db.Uuid
   name        String
   description String
   image       String
@@ -54,29 +55,30 @@ model Category {
   category String @default("__default")
   price    Int
   stock    Int
-  itemId   Int
-  item     Item   @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  merchId  String
+  merch    Merch  @relation(fields: [merchId], references: [id], onDelete: Cascade)
 }
 
 model Sale {
   id          Int          @id @default(autoincrement())
-  soldAt      DateTime
+  soldAt      DateTime     @default(now())
   shopId      Int
   SaleDetails SaleDetail[]
   shop        Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
 }
 
 model SaleDetail {
-  id           Int    @id @default(autoincrement())
-  quantity     Int
-  itemName     String
-  itemCategory String
-  itemPrice    Int
-  saleId       Int
-  sale         Sale   @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  id            Int    @id @default(autoincrement())
+  quantity      Int
+  merchName     String
+  merchCategory String
+  merchPrice    Int
+  saleId        Int
+  sale          Sale   @relation(fields: [saleId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
   USER
   ADMIN
+  OWNER
 }

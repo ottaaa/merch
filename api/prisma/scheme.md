@@ -4,6 +4,7 @@ erDiagram
         Role {
             USER USER
 ADMIN ADMIN
+OWNER OWNER
         }
     
   User {
@@ -16,24 +17,23 @@ ADMIN ADMIN
 
   Shop {
     Int id PK 
+    String name  
     }
   
 
   Seller {
-    Role role  
     Int userId PK 
     Int shopId PK 
+    Role role  
     }
   
 
-  Item {
-    Int id PK 
+  Merch {
+    String id PK 
     String name  
     String description  
     String image  
     Int shopId  
-    DateTime createdAt  
-    DateTime updatedAt  
     }
   
 
@@ -42,7 +42,7 @@ ADMIN ADMIN
     String category  
     Int price  
     Int stock  
-    Int itemId  
+    String merchId  
     }
   
 
@@ -56,17 +56,17 @@ ADMIN ADMIN
   SaleDetail {
     Int id PK 
     Int quantity  
-    String itemName  
-    String itemCategory  
-    Int itemPrice  
+    String merchName  
+    String merchCategory  
+    Int merchPrice  
     Int saleId  
     }
   
     Seller o|--|| Role : "enum:role"
     Seller o{--|| User : "user"
     Seller o{--|| Shop : "shop"
-    Item o{--|| Shop : "shop"
-    Category o{--|| Item : "item"
+    Merch o{--|| Shop : "shop"
+    Category o{--|| Merch : "merch"
     Sale o{--|| Shop : "shop"
     SaleDetail o{--|| Sale : "sale"
 ```
