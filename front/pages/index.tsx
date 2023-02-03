@@ -4,17 +4,6 @@ import styles from '../styles/Home.module.css'
 import React from 'react'
 import {itemsService} from '@/services/api/items'
 
-export const getStaticProps = async () => {
-  const res = await itemsService.getItemsList()
-  const items = JSON.parse(JSON.stringify(res.items));
-
-  return {
-    props: {
-      items,
-    }
-  }
-}
-
 export default function Home(props: any){
 
     return (
@@ -27,9 +16,7 @@ export default function Home(props: any){
 
       <main className={styles.main}>
         <h1>
-            {props.items.map((item: { id: number, name: string, createdAt: string, updatedAt: string,}) => (
-                <div className={styles.card}>{item.id}{item.name}</div>
-            ))}
+          index
         </h1>
       </main>
     </div>
