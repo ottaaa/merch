@@ -6,9 +6,7 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
-  extends: [
-    '../.eslintrc.js',
-  ],
+  extends: ['../.eslintrc.js'],
   root: true,
   env: {
     node: true,
@@ -23,14 +21,40 @@ module.exports = {
       'error',
       {
         groups: [
-          'builtin', // 組み込みモジュール
-          'external', // npmでインストールした外部ライブラリ
-          'internal', // 自作モジュール
-          ['parent', 'sibling'],
-          'object',
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index', 'object'],
           'type',
-          'index',
         ],
+        pathGroups: [
+          {
+            pattern: '#/**/*dto',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '#/**/*module',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '#/**/*service',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '#/**/*controller',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '@nestjs/**',
+            group: 'builtin',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: ['nestjs'],
         alphabetize: {
           order: 'asc', // 昇順にソート
         },
