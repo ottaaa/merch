@@ -56,7 +56,7 @@ module.exports = {
         ],
         pathGroupsExcludedImportTypes: ['nestjs'],
         alphabetize: {
-          order: 'asc', // 昇順にソート
+          order: 'asc',
         },
         'newlines-between': 'always',
       },
