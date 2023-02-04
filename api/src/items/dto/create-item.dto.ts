@@ -4,10 +4,10 @@ export class CreateItemDto {
   @ApiProperty({
     example: 'CD',
   })
-  name: string;
+    name: string;
 
   @ApiProperty({
     example: 1000,
   })
-  price: number;
+    price: number;
 }

@@ -1,19 +1,20 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import { Item } from '@prisma/client';
 
 export class ItemEntity implements Item {
   @ApiProperty()
-  id: number;
+    id: number;
 
   @ApiProperty()
-  name: string;
+    name: string;
 
   @ApiProperty()
-  price: number;
+    price: number;
 
   @ApiProperty()
-  createdAt: Date;
+    createdAt: Date;
 
   @ApiProperty()
-  updatedAt: Date;
+    updatedAt: Date;
 }
