@@ -11,14 +11,15 @@ module.exports = {
   env: {
     node: true,
     jest: true,
+    es6: true,
     es2022: true,
   },
   ignorePatterns: ['.eslintrc.js', 'dist'],
   rules: {
-    'no-restricted-imports': ['error', { patterns: ['./', '../'] }],
+    'object-shorthand': 'warn',
     'no-useless-constructor': 'off',
     'import/order': [
-      'error',
+      'warn',
       {
         groups: [
           'builtin',
@@ -29,27 +30,42 @@ module.exports = {
         ],
         pathGroups: [
           {
-            pattern: '#/**/*dto',
+            pattern: '{#,.*}/**/*.model',
             group: 'builtin',
             position: 'before',
           },
           {
-            pattern: '#/**/*module',
+            pattern: '{#,.*}/**/*.dto',
             group: 'builtin',
             position: 'before',
           },
           {
-            pattern: '#/**/*service',
+            pattern: '{#,.*}/**/*.module',
             group: 'builtin',
             position: 'before',
           },
           {
-            pattern: '#/**/*controller',
+            pattern: '{#,.*}/**/*.repository',
             group: 'builtin',
             position: 'before',
           },
           {
-            pattern: '@nestjs/**',
+            pattern: '{#,.*}/**/*.service',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.controller',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{@prisma/**,**prisma**}',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{@nestjs/**,nestjs**}',
             group: 'builtin',
             position: 'before',
           },
@@ -62,6 +78,6 @@ module.exports = {
       },
     ],
     'import/no-duplicates': 'error',
-    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-imports': 'warn',
   },
 };

@@ -4,9 +4,6 @@ module.exports = {
   rules: {
     quotes: ["warn", "single"],
     semi: ["warn", "always"],
-    "comma-dangle": ["warn", "always-multiline"],
-    "comma-spacing": ["warn", { after: true }],
-    "key-spacing": ["warn"],
     "no-console": [
       "warn",
       { allow: ["info", "error", "warn", "debug", "verbose"] },
