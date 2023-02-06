@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-
+import { ItemEntity } from '../entities/item.entity';
 import { Item as ItemModel } from '@prisma/client';
-
-import { ItemEntity } from '#/src/items/entities/item.entity';
 
 export class ResponseItemDto {
   @ApiProperty({
