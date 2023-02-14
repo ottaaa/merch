@@ -76,6 +76,7 @@ model Stock {
   id         Int       @id @default(autoincrement())
   quantity   Int
   type       StockType
+  createdAt  DateTime  @default(now()) @map("created_at")
   categoryId Int       @map("category_id")
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 }
