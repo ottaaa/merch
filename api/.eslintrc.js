@@ -6,38 +6,84 @@ module.exports = {
     sourceType: 'module',
     tsconfigRootDir: __dirname,
   },
-  extends: [
-    '../.eslintrc.js',
-  ],
+  extends: ['../.eslintrc.js'],
   root: true,
   env: {
     node: true,
     jest: true,
+    es6: true,
     es2022: true,
   },
   ignorePatterns: ['.eslintrc.js', 'dist'],
   rules: {
-    'no-restricted-imports': ['error', { patterns: ['./', '../'] }],
+    'object-shorthand': 'warn',
     'no-useless-constructor': 'off',
     'import/order': [
-      'error',
+      'warn',
       {
         groups: [
-          'builtin', // 組み込みモジュール
-          'external', // npmでインストールした外部ライブラリ
-          'internal', // 自作モジュール
-          ['parent', 'sibling'],
-          'object',
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index', 'object'],
           'type',
-          'index',
         ],
+        pathGroups: [
+          {
+            pattern: '{#,.*}/**/*.interface',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '**/models/*',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.dto',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.module',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.repository',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.service',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{#,.*}/**/*.controller',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{@prisma/**,*prisma*}',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '{@nestjs/**,nestjs*}',
+            group: 'builtin',
+            position: 'before',
+          },
+        ],
+        pathGroupsExcludedImportTypes: [],
         alphabetize: {
-          order: 'asc', // 昇順にソート
+          order: 'asc',
         },
         'newlines-between': 'always',
+        warnOnUnassignedImports: true,
       },
     ],
     'import/no-duplicates': 'error',
-    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-imports': 'warn',
   },
 };

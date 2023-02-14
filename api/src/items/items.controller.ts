@@ -1,8 +1,10 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+
+import { ItemsService } from './items.service';
+
 import { CreateItemDto } from './dto/create-item.dto';
 import { ResponseItemDto, ResponseItemsDto } from './dto/response-item.dto';
-import { ItemsService } from './items.service';
 
 @Controller('items')
 export class ItemsController {
@@ -24,9 +26,7 @@ export class ItemsController {
   @ApiCreatedResponse({
     type: ResponseItemDto,
   })
-  async makeItem(
-    @Body() createItemDto: CreateItemDto,
-  ): Promise<ResponseItemDto> {
+  async makeItem(@Body() createItemDto: CreateItemDto): Promise<ResponseItemDto> {
     const item = await this.itemsService.createItem(createItemDto);
     const response = new ResponseItemDto(item);
     return response;
