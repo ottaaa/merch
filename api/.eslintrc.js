@@ -30,7 +30,12 @@ module.exports = {
         ],
         pathGroups: [
           {
-            pattern: '{#,.*}/**/*.model',
+            pattern: '{#,.*}/**/*.interface',
+            group: 'builtin',
+            position: 'before',
+          },
+          {
+            pattern: '**/models/*',
             group: 'builtin',
             position: 'before',
           },
@@ -60,21 +65,22 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: '{@prisma/**,**prisma**}',
+            pattern: '{@prisma/**,*prisma*}',
             group: 'builtin',
             position: 'before',
           },
           {
-            pattern: '{@nestjs/**,nestjs**}',
+            pattern: '{@nestjs/**,nestjs*}',
             group: 'builtin',
             position: 'before',
           },
         ],
-        pathGroupsExcludedImportTypes: ['nestjs'],
+        pathGroupsExcludedImportTypes: [],
         alphabetize: {
           order: 'asc',
         },
         'newlines-between': 'always',
+        warnOnUnassignedImports: true,
       },
     ],
     'import/no-duplicates': 'error',
