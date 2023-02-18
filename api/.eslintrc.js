@@ -21,13 +21,7 @@ module.exports = {
     'import/order': [
       'warn',
       {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['parent', 'sibling', 'index', 'object'],
-          'type',
-        ],
+        groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index', 'object'], 'type'],
         pathGroups: [
           {
             pattern: '{#,.*}/**/*.interface',
@@ -35,7 +29,7 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: '**/models/*',
+            pattern: '{#,.*}/**/*.model',
             group: 'builtin',
             position: 'before',
           },
