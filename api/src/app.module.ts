@@ -1,8 +1,24 @@
-import { Module } from '@nestjs/common';
+import { MerchsModule } from './api/merchs/merchs.module';
+import { ShopsModule } from './api/shops/shops.module';
 
-import { ItemsModule } from './items/items.module';
+import { PrismaModule } from 'nestjs-prisma';
+
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 
 @Module({
-  imports: [ItemsModule],
+  imports: [
+    PrismaModule.forRoot({
+      isGlobal: true,
+    }),
+    ShopsModule,
+    MerchsModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}
