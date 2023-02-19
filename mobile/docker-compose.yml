@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+# docker compose --profile tools up で生成
+  swagger-gen-client:
+    profiles:
+      - tools
+    image: openapitools/openapi-generator-cli:latest
+    volumes:
+      - type: bind
+        source: ../
+        target: /app
+    command: generate -i /app/api/swagger-spec.yaml -o /app/mobile/gen -g dart-dio
