@@ -16,6 +16,15 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js', 'dist'],
   rules: {
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          Function: false,
+        },
+        extendDefaults: true,
+      },
+    ],
     'object-shorthand': 'warn',
     'no-useless-constructor': 'off',
     'import/order': [
