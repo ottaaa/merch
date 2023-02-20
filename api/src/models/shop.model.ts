@@ -7,11 +7,11 @@ import { Exclude } from 'class-transformer';
 import { PrismaToModel, Properties } from './types/model.type';
 
 export class ShopModel implements PrismaToModel<Shop> {
-  @ApiProperty({ type: Number, example: 1 })
   @Exclude({ toPlainOnly: true })
+  @ApiProperty({ example: 1 })
   readonly id?: number;
 
-  @ApiProperty({ type: String, example: '結束バンド' })
+  @ApiProperty({ example: '結束バンド' })
   readonly name: string;
 
   constructor({ id, name }: Properties<ShopModel>) {
