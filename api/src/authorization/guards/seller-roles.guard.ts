@@ -1,11 +1,11 @@
-import { SellersService } from '../api/seller/seller.service';
-
 import { Role } from '@prisma/client';
 
 import { BadRequestException, CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
 import { Request } from 'express';
+
+import { SellersService } from '../../api/seller/seller.service';
 
 @Injectable()
 export class SellerRolesGuard implements CanActivate {

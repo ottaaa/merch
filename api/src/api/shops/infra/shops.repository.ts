@@ -38,7 +38,7 @@ export class ShopsRepository implements IShopsRepository {
     const shops = await this.prisma.shop.findMany({
       where: {
         sellers: {
-          every: {
+          some: {
             userId,
           },
         },

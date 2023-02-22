@@ -33,8 +33,10 @@ import {
 
 import { ShopModel } from '../../models/shop.model';
 
-import { SellerRole } from '#/src/authorization/decorators/seller-role.decolator';
-import { SellerRolesGuard } from '#/src/authorization/seller-roles.guard';
+import { UserId } from '#/src/authentication/decorators/guard-response.decorator';
+import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
+import { SellerRole } from '#/src/authorization/decorators/seller-role.decorator';
+import { SellerRolesGuard } from '#/src/authorization/guards/seller-roles.guard';
 
 @Controller('shops')
 @ApiTags('Shop / 物販')
@@ -43,6 +45,7 @@ export class ShopsController {
 
   @Post('')
   @HttpCode(201)
+  @UseGuards(UserIdGuard)
   @ApiOperation({
     summary: '物販を作成する',
     description: '物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。',
@@ -55,12 +58,12 @@ export class ShopsController {
   @ApiBody({ type: CreateShopDto })
   @ApiCreatedResponse({ type: ShopModel })
   @ApiBadRequestResponse()
-  async create(@Headers('x-user-id') uid: string, @Body() body: CreateShopDto) {
-    const userId = Number(uid);
+  async create(@UserId() userId: number, @Body() body: CreateShopDto) {
     return this.shopsService.create(body, userId);
   }
 
   @Get('')
+  @UseGuards(UserIdGuard)
   @ApiOperation({
     summary: '物販のリストを取得する',
     description: 'カレントユーザーが販売者として所属する物販のリストを取得します。',
@@ -72,8 +75,7 @@ export class ShopsController {
   })
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
-  async findAll(@Headers('x-user-id') uid: string): Promise<ShopModel[] | null> {
-    const userId = Number(uid);
+  async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
     return await this.shopsService.findAll(userId);
   }
 

@@ -1,10 +1,9 @@
 import { SellersModule } from '../api/seller/sellers.module';
 
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 
-import { SellerRolesGuard } from './seller-roles.guard';
+import { SellerRolesGuard } from './guards/seller-roles.guard';
 
-@Global()
 @Module({
   imports: [SellersModule],
   providers: [SellerRolesGuard],
