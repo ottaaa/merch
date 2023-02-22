@@ -1,12 +1,22 @@
-import { SellersRepository } from './infra/sellers.repository';
+import { SellerModel } from '#/src/models/seller.model';
+
+import { PrismaService } from 'nestjs-prisma';
 
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SellersService {
-  constructor(private readonly sellersRepo: SellersRepository) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findByUserAndShop({ userId, shopId }: { userId: number; shopId: number }) {
-    return await this.sellersRepo.findByUserAndShop({ userId, shopId });
+    const seller = await this.prisma.seller.findUnique({
+      where: {
+        userId_shopId: {
+          userId,
+          shopId,
+        },
+      },
+    });
+    return seller && new SellerModel(seller);
   }
 }
