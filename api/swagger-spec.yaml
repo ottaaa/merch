@@ -1,36 +1,163 @@
 openapi: 3.0.0
 paths:
-  /api/items:
-    get:
-      operationId: ItemsController_findAll
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResponseItemsDto'
-      tags:
-        - items
+  /api/shops:
     post:
-      operationId: ItemsController_makeItem
-      parameters: []
+      operationId: ShopsController_create
+      summary: 物販を作成する
+      description: 物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。
+      parameters:
+        - name: x-user-id
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateItemDto'
+              $ref: '#/components/schemas/CreateShopDto'
       responses:
         '201':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseItemDto'
+                $ref: '#/components/schemas/ShopModel'
+        '400':
+          description: ''
+      tags: &ref_0
+        - Shop / 物販
+    get:
+      operationId: ShopsController_findAll
+      summary: 物販のリストを取得する
+      description: カレントユーザーが販売者として所属する物販のリストを取得します。
+      parameters:
+        - name: x-user-id
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopModel'
+        '400':
+          description: ''
+      tags: *ref_0
+  /api/shops/{shopId}:
+    get:
+      operationId: ShopsController_findOne
+      summary: 物販を取得する
+      description: 物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。
+      parameters:
+        - name: x-user-id
+          required: true
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+        - name: shopId
+          required: true
+          in: path
+          example: 1
+          schema:
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopModel'
+        '400':
+          description: ''
+      tags: *ref_0
+    patch:
+      operationId: ShopsController_update
+      summary: 物販を更新する
+      description: 物販を更新します。更新できる物販はカレントユーザーが販売者として所属するものに限ります。
+      parameters:
+        - name: x-user-id
+          required: true
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+        - name: shopId
+          required: true
+          in: path
+          example: 2
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateShopDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShopModel'
+        '400':
+          description: ''
+      tags: *ref_0
+    delete:
+      operationId: ShopsController_delete
+      summary: 物販を削除する
+      description: 物販を削除します。削除できる物販はカレントユーザーが販売者として所属し、かつオーナー権限を持つものに限ります。
+      parameters:
+        - name: x-user-id
+          required: true
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+        - name: shopId
+          required: true
+          in: path
+          example: 1
+          schema:
+            type: number
+      responses:
+        '204':
+          description: ''
+        '400':
+          description: ''
+      tags: *ref_0
+  /api/shops/{shopId}/merchs:
+    post:
+      operationId: MerchsController_create
+      summary: マーチを作成する
+      description: マーチを作成します。
+      parameters:
+        - name: shopId
+          required: true
+          in: path
+          schema:
+            type: number
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMerchDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchModel'
       tags:
-        - items
+        - Merch / マーチ
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
@@ -40,65 +167,74 @@ tags: []
 servers: []
 components:
   schemas:
-    ItemEntity:
+    CreateShopDto:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: 結束バンド
+      required:
+        - name
+    ShopModel:
       type: object
       properties:
         id:
           type: number
+          example: 1
         name:
           type: string
-        price:
-          type: number
-        createdAt:
-          format: date-time
-          type: string
-        updatedAt:
-          format: date-time
-          type: string
+          example: 結束バンド
       required:
         - id
         - name
-        - price
-        - createdAt
-        - updatedAt
-    ResponseItemsDto:
-      type: object
-      properties:
-        items:
-          example:
-            - id: 1
-              name: Tシャツ
-              price: 3000
-              createdAt: '2022-11-14T14:04:02.063Z'
-              updatedAt: '2022-11-14T14:04:02.063Z'
-          type: array
-          items:
-            $ref: '#/components/schemas/ItemEntity'
-      required:
-        - items
-    CreateItemDto:
+    UpdateShopDto:
       type: object
       properties:
         name:
           type: string
-          example: CD
-        price:
-          type: number
-          example: 1000
-      required:
-        - name
-        - price
-    ResponseItemDto:
+          minLength: 1
+          maxLength: 128
+          example: 放課後ティータイム
+    CreateMerchDto:
       type: object
       properties:
-        item:
-          example:
-            id: 1
-            name: Tシャツ
-            price: 2500
-            createdAt: '2022-11-14T14:04:02.063Z'
-            updatedAt: '2022-11-14T14:04:02.063Z'
-          allOf:
-            - $ref: '#/components/schemas/ItemEntity'
+        name:
+          type: string
+        description:
+          type: string
+        image:
+          type: string
       required:
-        - item
+        - name
+        - description
+        - image
+    MerchModel:
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        uuid:
+          type: string
+          example: 06d65bdc-5cad-45b5-8745-d52a2254773e
+        name:
+          type: string
+          example: Tシャツ2023
+        description:
+          type: string
+          example: 2023年ツアーTシャツ
+        image:
+          type: string
+          example: path to bucket
+        shopId:
+          type: number
+          example: 1
+      required:
+        - id
+        - uuid
+        - name
+        - description
+        - image
+        - shopId
