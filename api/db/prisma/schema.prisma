@@ -7,25 +7,25 @@ generator docs {
   output   = "../../docs/prisma"
 }
 
-generator prismaClassGenerator {
-  provider      = "prisma-class-generator"
-  dryRun        = false
-  output        = "../../src/_gen/entities"
-  makeIndexFile = false
-}
+// generator prismaClassGenerator {
+//   provider      = "prisma-class-generator"
+//   dryRun        = false
+//   output        = "../../src/_gen/entities"
+//   makeIndexFile = false
+// }
 
-generator nestjsDto {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "../../src/_gen//dtos"
-  outputToNestJsResourceStructure = "true"
-  exportRelationModifierClasses   = "true"
-  createDtoPrefix                 = "Create"
-  updateDtoPrefix                 = "Update"
-  dtoSuffix                       = "Dto"
-  entityPrefix                    = ""
-  entitySuffix                    = "Entity"
-  fileNamingStyle                 = "camel"
-}
+// generator nestjsDto {
+//   provider                        = "prisma-generator-nestjs-dto"
+//   output                          = "../../src/_gen//dtos"
+//   outputToNestJsResourceStructure = "true"
+//   exportRelationModifierClasses   = "true"
+//   createDtoPrefix                 = "Create"
+//   updateDtoPrefix                 = "Update"
+//   dtoSuffix                       = "Dto"
+//   entityPrefix                    = ""
+//   entitySuffix                    = "Entity"
+//   fileNamingStyle                 = "camel"
+// }
 
 datasource db {
   provider = "postgresql"
