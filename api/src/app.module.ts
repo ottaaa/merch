@@ -1,5 +1,7 @@
 import { MerchsModule } from './api/merchs/merchs.module';
+import { SellersModule } from './api/seller/sellers.module';
 import { ShopsModule } from './api/shops/shops.module';
+import { AuthorizationModule } from './authorization/authorization.module';
 
 import { PrismaModule } from 'nestjs-prisma';
 
@@ -13,6 +15,8 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
     }),
     ShopsModule,
     MerchsModule,
+    SellersModule,
+    AuthorizationModule,
   ],
   providers: [
     {
