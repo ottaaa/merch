@@ -3,6 +3,8 @@ import { UpdateShopDto } from './dto/update-shop.dto';
 
 import { ShopsService } from './shops.service';
 
+import { Role } from '@prisma/client';
+
 import {
   Body,
   Controller,
@@ -15,6 +17,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -29,6 +32,9 @@ import {
 } from '@nestjs/swagger';
 
 import { ShopModel } from '../../models/shop.model';
+
+import { SellerRole } from '#/src/authorization/decorators/seller-role.decolator';
+import { SellerRolesGuard } from '#/src/authorization/seller-roles.guard';
 
 @Controller('shops')
 @ApiTags('Shop / 物販')
@@ -49,7 +55,7 @@ export class ShopsController {
   @ApiBody({ type: CreateShopDto })
   @ApiCreatedResponse({ type: ShopModel })
   @ApiBadRequestResponse()
-  async create(@Headers('x-user-id') uid: number, @Body() body: CreateShopDto) {
+  async create(@Headers('x-user-id') uid: string, @Body() body: CreateShopDto) {
     const userId = Number(uid);
     return this.shopsService.create(body, userId);
   }
@@ -66,12 +72,14 @@ export class ShopsController {
   })
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
-  async findAll(@Headers('x-user-id') uid: number): Promise<ShopModel[] | null> {
+  async findAll(@Headers('x-user-id') uid: string): Promise<ShopModel[] | null> {
     const userId = Number(uid);
     return await this.shopsService.findAll(userId);
   }
 
-  @Get(':id')
+  @Get(':shopId')
+  @SellerRole(Role.USER)
+  @UseGuards(SellerRolesGuard)
   @ApiOperation({
     summary: '物販を取得する',
     description: '物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。',
@@ -81,17 +89,19 @@ export class ShopsController {
     description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
     example: 1,
   })
-  @ApiParam({ name: 'id', example: 1 })
+  @ApiParam({ name: 'shopId', example: 1 })
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async findOne(
-    @Headers('x-user-id') uid: number,
-    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
+    @Headers('x-user-id') uid: string,
+    @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
   ): Promise<ShopModel | null> {
     return await this.shopsService.findOne(id);
   }
 
-  @Patch(':id')
+  @Patch(':shopId')
+  @SellerRole(Role.USER)
+  @UseGuards(SellerRolesGuard)
   @ApiOperation({
     summary: '物販を更新する',
     description: '物販を更新します。更新できる物販はカレントユーザーが販売者として所属するものに限ります。',
@@ -101,18 +111,21 @@ export class ShopsController {
     description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
     example: 1,
   })
-  @ApiParam({ name: 'id', example: 2 })
+  @ApiParam({ name: 'shopId', example: 2 })
   @ApiBody({ type: UpdateShopDto })
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async update(
-    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number,
+    @Headers('x-user-id') uid: string,
+    @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number,
     @Body() body: UpdateShopDto
   ): Promise<ShopModel> {
     return await this.shopsService.update(id, body);
   }
 
-  @Delete(':id')
+  @Delete(':shopId')
+  @SellerRole(Role.OWNER)
+  @UseGuards(SellerRolesGuard)
   @HttpCode(204)
   @ApiOperation({
     summary: '物販を削除する',
@@ -124,12 +137,12 @@ export class ShopsController {
     description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
     example: 1,
   })
-  @ApiParam({ name: 'id', example: 1 })
+  @ApiParam({ name: 'shopId', example: 1 })
   @ApiNoContentResponse()
   @ApiBadRequestResponse()
   async delete(
-    @Headers('x-user-id') uid: number,
-    @Param('id', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
+    @Headers('x-user-id') uid: string,
+    @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
   ): Promise<void> {
     await this.shopsService.delete(id);
   }
