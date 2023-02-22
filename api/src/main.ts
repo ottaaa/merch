@@ -1,13 +1,15 @@
 import { AppModule } from './app.module';
 
 import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import * as fs from 'fs';
 
 import { dump } from 'js-yaml';
 
+import { AllExceptionsFilter } from './infra/filters/all-exception.filter';
+import { HttpExceptionFilter } from './infra/filters/http-exception.filter';
 import * as pack from '../package.json';
 
 async function bootstrap() {
@@ -21,6 +23,10 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   );
+  const httpAdapter = app.get(HttpAdapterHost);
+
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
     .setTitle('物販(仮) Document')
