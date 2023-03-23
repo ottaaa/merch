@@ -44,8 +44,8 @@ export class ShopsController {
   constructor(private readonly shopsService: ShopsService) {}
 
   @Post('')
-  @HttpCode(201)
   @UseGuards(UserIdGuard)
+  @HttpCode(201)
   @ApiOperation({
     summary: '物販を作成する',
     description: '物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。',
@@ -58,7 +58,7 @@ export class ShopsController {
   @ApiBody({ type: CreateShopDto })
   @ApiCreatedResponse({ type: ShopModel })
   @ApiBadRequestResponse()
-  async create(@UserId() userId: number, @Body() body: CreateShopDto) {
+  async create(@UserId() userId: number, @Body() body: CreateShopDto): Promise<ShopModel> {
     return this.shopsService.create(body, userId);
   }
 
@@ -80,7 +80,7 @@ export class ShopsController {
   }
 
   @Get(':shopId')
-  @SellerRole(Role.USER)
+  // @SellerRole(Role.USER)
   @UseGuards(SellerRolesGuard)
   @ApiOperation({
     summary: '物販を取得する',

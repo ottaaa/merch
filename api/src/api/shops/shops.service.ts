@@ -11,8 +11,15 @@ import { ShopModel } from '../../models/shop.model';
 export class ShopsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  /**
+   * 物販を作成する。
+   *
+   * @param body
+   * @param userId
+   * @returns
+   */
   async create(body: CreateShopDto, userId: number): Promise<ShopModel> {
-    return await this.prisma.shop.create({
+    const shop = await this.prisma.shop.create({
       data: {
         ...body,
         sellers: {
@@ -27,6 +34,7 @@ export class ShopsService {
         },
       },
     });
+    return new ShopModel(shop);
   }
 
   async findAll(userId: number): Promise<ShopModel[]> {
