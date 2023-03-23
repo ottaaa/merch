@@ -1,4 +1,3 @@
-import { MerchsModule } from './api/merchs/merchs.module';
 import { SellersModule } from './api/seller/sellers.module';
 import { ShopsModule } from './api/shops/shops.module';
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -12,14 +11,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggerMiddleware } from './infra/middleware/logger.middleware';
 
 @Module({
-  imports: [
-    PrismaModule.forRoot(),
-    ShopsModule,
-    MerchsModule,
-    SellersModule,
-    AuthorizationModule,
-    AuthenticationModule,
-  ],
+  imports: [PrismaModule.forRoot(), ShopsModule, SellersModule, AuthorizationModule, AuthenticationModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
