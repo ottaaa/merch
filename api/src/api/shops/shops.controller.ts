@@ -40,6 +40,11 @@ import { SellerRolesGuard } from '#/src/authorization/guards/seller-roles.guard'
 
 @Controller('shops')
 @ApiTags('Shop / 物販')
+@ApiHeader({
+  name: 'x-user-id',
+  description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
+  example: 1,
+})
 export class ShopsController {
   constructor(private readonly shopsService: ShopsService) {}
 
@@ -49,11 +54,6 @@ export class ShopsController {
   @ApiOperation({
     summary: '物販を作成する',
     description: '物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。',
-  })
-  @ApiHeader({
-    name: 'x-user-id',
-    description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
-    example: 1,
   })
   @ApiBody({ type: CreateShopDto })
   @ApiCreatedResponse({ type: ShopModel })
@@ -68,11 +68,6 @@ export class ShopsController {
     summary: '物販のリストを取得する',
     description: 'カレントユーザーが販売者として所属する物販のリストを取得します。',
   })
-  @ApiHeader({
-    name: 'x-user-id',
-    description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
-    example: 1,
-  })
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
@@ -85,11 +80,6 @@ export class ShopsController {
   @ApiOperation({
     summary: '物販を取得する',
     description: '物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。',
-  })
-  @ApiHeader({
-    name: 'x-user-id',
-    description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
-    example: 1,
   })
   @ApiParam({ name: 'shopId', example: 1 })
   @ApiOkResponse({ type: ShopModel })
@@ -107,11 +97,6 @@ export class ShopsController {
   @ApiOperation({
     summary: '物販を更新する',
     description: '物販を更新します。更新できる物販はカレントユーザーが販売者として所属するものに限ります。',
-  })
-  @ApiHeader({
-    name: 'x-user-id',
-    description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
-    example: 1,
   })
   @ApiParam({ name: 'shopId', example: 2 })
   @ApiBody({ type: UpdateShopDto })
@@ -133,11 +118,6 @@ export class ShopsController {
     summary: '物販を削除する',
     description:
       '物販を削除します。削除できる物販はカレントユーザーが販売者として所属し、かつオーナー権限を持つものに限ります。',
-  })
-  @ApiHeader({
-    name: 'x-user-id',
-    description: '認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定',
-    example: 1,
   })
   @ApiParam({ name: 'shopId', example: 1 })
   @ApiNoContentResponse()

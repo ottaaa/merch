@@ -6,7 +6,8 @@ paths:
       summary: 物販を作成する
       description: 物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。
       parameters:
-        - name: x-user-id
+        - &ref_0
+          name: x-user-id
           in: header
           description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
@@ -26,18 +27,14 @@ paths:
                 $ref: '#/components/schemas/ShopModel'
         '400':
           description: ''
-      tags: &ref_0
+      tags: &ref_1
         - Shop / 物販
     get:
       operationId: ShopsController_findAll
       summary: 物販のリストを取得する
       description: カレントユーザーが販売者として所属する物販のリストを取得します。
       parameters:
-        - name: x-user-id
-          in: header
-          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
-          schema:
-            type: string
+        - *ref_0
       responses:
         '200':
           description: ''
@@ -47,17 +44,17 @@ paths:
                 $ref: '#/components/schemas/ShopModel'
         '400':
           description: ''
-      tags: *ref_0
+      tags: *ref_1
   /api/shops/{shopId}:
     get:
       operationId: ShopsController_findOne
       summary: 物販を取得する
       description: 物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。
       parameters:
+        - *ref_0
         - name: x-user-id
           required: true
           in: header
-          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
             type: string
         - name: shopId
@@ -75,16 +72,16 @@ paths:
                 $ref: '#/components/schemas/ShopModel'
         '400':
           description: ''
-      tags: *ref_0
+      tags: *ref_1
     patch:
       operationId: ShopsController_update
       summary: 物販を更新する
       description: 物販を更新します。更新できる物販はカレントユーザーが販売者として所属するものに限ります。
       parameters:
+        - *ref_0
         - name: x-user-id
           required: true
           in: header
-          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
             type: string
         - name: shopId
@@ -108,16 +105,16 @@ paths:
                 $ref: '#/components/schemas/ShopModel'
         '400':
           description: ''
-      tags: *ref_0
+      tags: *ref_1
     delete:
       operationId: ShopsController_delete
       summary: 物販を削除する
       description: 物販を削除します。削除できる物販はカレントユーザーが販売者として所属し、かつオーナー権限を持つものに限ります。
       parameters:
+        - *ref_0
         - name: x-user-id
           required: true
           in: header
-          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
             type: string
         - name: shopId
@@ -131,7 +128,7 @@ paths:
           description: ''
         '400':
           description: ''
-      tags: *ref_0
+      tags: *ref_1
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
