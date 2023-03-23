@@ -132,32 +132,6 @@ paths:
         '400':
           description: ''
       tags: *ref_0
-  /api/shops/{shopId}/merchs:
-    post:
-      operationId: MerchsController_create
-      summary: マーチを作成する
-      description: マーチを作成します。
-      parameters:
-        - name: shopId
-          required: true
-          in: path
-          schema:
-            type: number
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateMerchDto'
-      responses:
-        '201':
-          description: ''
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/MerchModel'
-      tags:
-        - Merch / マーチ
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
@@ -197,44 +171,3 @@ components:
           minLength: 1
           maxLength: 128
           example: 放課後ティータイム
-    CreateMerchDto:
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-        image:
-          type: string
-      required:
-        - name
-        - description
-        - image
-    MerchModel:
-      type: object
-      properties:
-        id:
-          type: number
-          example: 1
-        uuid:
-          type: string
-          example: 06d65bdc-5cad-45b5-8745-d52a2254773e
-        name:
-          type: string
-          example: Tシャツ2023
-        description:
-          type: string
-          example: 2023年ツアーTシャツ
-        image:
-          type: string
-          example: path to bucket
-        shopId:
-          type: number
-          example: 1
-      required:
-        - id
-        - uuid
-        - name
-        - description
-        - image
-        - shopId
