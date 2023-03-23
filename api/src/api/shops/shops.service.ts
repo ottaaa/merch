@@ -12,8 +12,8 @@ export class ShopsService {
   constructor(private readonly prisma: PrismaService) {}
 
   /**
-   * 物販を作成する。
-   *
+   * ショップを作成する。
+   * ショップを作成したユーザーは同時にオーナー権限を持つ販売者に紐付けられる。
    * @param body
    * @param userId
    * @returns
@@ -37,6 +37,11 @@ export class ShopsService {
     return new ShopModel(shop);
   }
 
+  /**
+   * ユーザーが販売者として所属するショップを取得する
+   * @param userId
+   * @returns
+   */
   async findAll(userId: number): Promise<ShopModel[]> {
     const shops = await this.prisma.shop.findMany({
       where: {
@@ -50,6 +55,11 @@ export class ShopsService {
     return shops.map((shop) => new ShopModel(shop));
   }
 
+  /**
+   * 指定のショップを取得する。
+   * @param id
+   * @returns
+   */
   async findOne(id: number): Promise<ShopModel | null> {
     const shop = await this.prisma.shop.findUnique({
       where: { id },
@@ -57,6 +67,12 @@ export class ShopsService {
     return shop && new ShopModel(shop);
   }
 
+  /**
+   * ショップを更新する。
+   * @param id
+   * @param body
+   * @returns
+   */
   async update(id: number, body: UpdateShopDto): Promise<ShopModel> {
     const shop = await this.prisma.shop.update({
       where: { id },
@@ -67,6 +83,11 @@ export class ShopsService {
     return shop && new ShopModel(shop);
   }
 
+  /**
+   * ショップを削除する。
+   * @param id
+   * @returns
+   */
   async delete(id: number): Promise<ShopModel> {
     const shop = await this.prisma.shop.delete({
       where: {

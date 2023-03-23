@@ -80,7 +80,7 @@ export class ShopsController {
   }
 
   @Get(':shopId')
-  // @SellerRole(Role.USER)
+  @SellerRole(Role.USER)
   @UseGuards(SellerRolesGuard)
   @ApiOperation({
     summary: '物販を取得する',
