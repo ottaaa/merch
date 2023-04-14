@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/page/common/draw_bar.dart';
 import 'package:openapi/openapi.dart';
 
-
-// region TODO: ↑repository層を作っていい感じにしたい
+// region TODO: ↓APIアクセスはrepository層を作っていい感じにしたい
 
 // ベースとなるAPIクライアント生成
 var client = Openapi(basePathOverride: "http://localhost:3000");
@@ -24,7 +24,6 @@ Future<String> itemApiCall() async {
 
 // endregion
 
-
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key, required this.title});
 
@@ -35,7 +34,7 @@ class ShopPage extends StatefulWidget {
 }
 
 class _ShopPageState extends State<ShopPage> {
-  String _text = '';
+  String _text = 'ショップ画面';
 
   Future<void> _incrementCounter() async {
     final res = await itemApiCall();
@@ -65,20 +64,7 @@ class _ShopPageState extends State<ShopPage> {
           ],
         ),
       ),
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text('item1'),
-              onTap: () {},
-            ),
-            ListTile(
-              title: Text('item2'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+      endDrawer: const DrawBar(omitPageName: 'ショップ'),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
