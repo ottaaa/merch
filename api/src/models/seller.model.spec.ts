@@ -2,7 +2,7 @@ import { SellerModel } from './seller.model';
 
 import { Role } from '@prisma/client';
 
-describe('ShopModel', () => {
+describe('SellerModel', () => {
   describe('hasPermission', () => {
     const ownerSeller = new SellerModel({
       role: 'OWNER',
