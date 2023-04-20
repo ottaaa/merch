@@ -10,7 +10,6 @@ import {
   Controller,
   Delete,
   Get,
-  Headers,
   HttpCode,
   HttpStatus,
   Param,
@@ -85,7 +84,6 @@ export class ShopsController {
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async findOne(
-    @Headers('x-user-id') uid: string,
     @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
   ): Promise<ShopModel | null> {
     return await this.shopsService.findOne(id);
@@ -103,7 +101,6 @@ export class ShopsController {
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async update(
-    @Headers('x-user-id') uid: string,
     @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number,
     @Body() body: UpdateShopDto
   ): Promise<ShopModel> {
@@ -123,7 +120,6 @@ export class ShopsController {
   @ApiNoContentResponse()
   @ApiBadRequestResponse()
   async delete(
-    @Headers('x-user-id') uid: string,
     @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
   ): Promise<void> {
     await this.shopsService.delete(id);
