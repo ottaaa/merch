@@ -125,7 +125,6 @@ model SaleDetail {
 
 enum Role {
   USER
-  ADMIN
   OWNER
 }
 

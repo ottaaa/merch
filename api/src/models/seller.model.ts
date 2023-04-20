@@ -13,13 +13,14 @@ export class SellerModel implements PrismaObjectToEntity<Seller> {
   }
 
   // NOTE 認可周りが複雑になってきたら認可モデルに切り出す
+  /**
+   * 販売者に権限があるか判定する
+   * @param requiredRole 必要なロール
+   * @returns boolean
+   */
   hasPermission(requiredRole: Role): boolean {
     if (requiredRole === Role.OWNER) {
       return this.role === Role.OWNER;
-    }
-
-    if (requiredRole === Role.ADMIN) {
-      return this.role === Role.OWNER || this.role === Role.ADMIN;
     }
 
     return true;
