@@ -23,10 +23,7 @@ export class SellerRolesGuard implements CanActivate {
   constructor(private reflector: Reflector, private readonly sellersService: SellersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRole: Role | undefined = this.reflector.getAllAndOverride<Role>('role', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+    const requiredRole: Role | undefined = this.reflector.get<Role>('requiredRole', context.getHandler());
     // @SellerRole が設定されてないのにガードが呼び出されちゃってるパターン
     if (!requiredRole) {
       this.logger.error('requiredRoleが未定義');

@@ -19,6 +19,13 @@ const mockSellersService = {
   }),
 };
 
+// const mockReflector = {
+//   provide: SellersService,
+//   useFactory: () => ({
+//     get: jest.fn(),
+//   }),
+// };
+
 describe('SellerRolesGuard', () => {
   let guard: SellerRolesGuard;
   let service: SellersService;
@@ -52,7 +59,7 @@ describe('SellerRolesGuard', () => {
     });
 
     it('適切なロールが付与されている場合、trueを返す', async () => {
-      reflector.getAllAndOverride = jest.fn().mockReturnValue(Role.OWNER);
+      reflector.get = jest.fn().mockReturnValue(Role.OWNER);
       service.findByUserAndShop = jest.fn().mockResolvedValue(mockOwnerSeller);
       const actual = await guard.canActivate(mockExecutionContext);
 
@@ -60,7 +67,7 @@ describe('SellerRolesGuard', () => {
     });
 
     it('userId, shopIdで一意な販売者が存在しない場合、falseを返す', async () => {
-      reflector.getAllAndOverride = jest.fn().mockReturnValue(Role.OWNER);
+      reflector.get = jest.fn().mockReturnValue(Role.OWNER);
       service.findByUserAndShop = jest.fn().mockResolvedValue(null);
       const actual = await guard.canActivate(mockExecutionContext);
 
@@ -68,7 +75,7 @@ describe('SellerRolesGuard', () => {
     });
 
     it('roleのメタデータがundefinedの場合、500を返す', async () => {
-      reflector.getAllAndOverride = jest.fn().mockReturnValue(undefined);
+      reflector.get = jest.fn().mockReturnValue(undefined);
       // service.findByUserAndShop = jest.fn().mockResolvedValue(null);
       const actual = () => guard.canActivate(mockExecutionContext);
 
