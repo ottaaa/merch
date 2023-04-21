@@ -4,3 +4,4 @@ node_modules
 dist
 docs
 _gen
+coverage
