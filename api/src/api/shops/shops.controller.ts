@@ -70,7 +70,6 @@ export class ShopsController {
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
-    console.log(userId);
     return await this.shopsService.findAll(userId);
   }
 

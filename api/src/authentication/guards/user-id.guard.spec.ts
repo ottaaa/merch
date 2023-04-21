@@ -17,7 +17,7 @@ describe('UserIdGuard', () => {
   });
 
   it('should be defined', () => {
-    expect(new UserIdGuard()).toBeDefined();
+    expect(guard).toBeDefined();
   });
 
   describe('canActivate', () => {
