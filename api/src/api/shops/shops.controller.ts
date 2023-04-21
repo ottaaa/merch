@@ -32,7 +32,7 @@ import {
 
 import { ShopModel } from '../../models/shop.model';
 
-import { UserId } from '#/src/authentication/decorators/guard-response.decorator';
+import { UserId } from '#/src/authentication/decorators/user-id.decorator';
 import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
 import { SellerRole } from '#/src/authorization/decorators/seller-role.decorator';
 import { SellerRolesGuard } from '#/src/authorization/guards/seller-roles.guard';
@@ -70,6 +70,7 @@ export class ShopsController {
   @ApiOkResponse({ type: ShopModel })
   @ApiBadRequestResponse()
   async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
+    console.log(userId);
     return await this.shopsService.findAll(userId);
   }
 
