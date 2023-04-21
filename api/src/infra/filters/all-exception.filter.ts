@@ -3,7 +3,7 @@ import { ExceptionFilter, Catch, ArgumentsHost, Logger, HttpStatus } from '@nest
 import { Response, Request } from 'express';
 
 @Catch()
-export class AllExceptionsFilter implements ExceptionFilter {
+export class AllExceptionFilter implements ExceptionFilter {
   private logger = new Logger('Exception');
 
   catch(exception: Error, host: ArgumentsHost) {

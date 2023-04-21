@@ -8,7 +8,7 @@ import * as fs from 'fs';
 
 import { dump } from 'js-yaml';
 
-import { AllExceptionsFilter } from './infra/filters/all-exceptions.filter';
+import { AllExceptionFilter } from './infra/filters/all-exception.filter';
 import { HttpExceptionFilter } from './infra/filters/http-exception.filter';
 import * as pack from '../package.json';
 
@@ -24,7 +24,7 @@ async function bootstrap() {
     })
   );
 
-  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalFilters(new AllExceptionFilter());
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
