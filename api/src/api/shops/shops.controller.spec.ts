@@ -1,3 +1,5 @@
+import { ShopModel } from '#/src/models/shop.model';
+
 import { CreateShopDto } from './dto/create-shop.dto';
 import { UpdateShopDto } from './dto/update-shop.dto';
 
@@ -9,14 +11,16 @@ import { ShopsController } from './shops.controller';
 
 import { Test, TestingModule } from '@nestjs/testing';
 
+const mockShop = new ShopModel({ id: 1, name: '結束バンド' });
+
 const shopsServiceProvider = {
   provide: ShopsService,
   useFactory: () => ({
-    create: jest.fn(),
-    findAll: jest.fn(),
-    findOne: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    create: jest.fn().mockResolvedValue(mockShop),
+    findAll: jest.fn().mockResolvedValue([mockShop]),
+    findOne: jest.fn().mockResolvedValue(mockShop),
+    update: jest.fn().mockResolvedValue(mockShop),
+    delete: jest.fn().mockResolvedValue(mockShop),
   }),
 };
 
@@ -48,12 +52,28 @@ describe('ShopsController', () => {
       controller.create(1, createShopDto);
       expect(service.create).toHaveBeenCalled();
     });
+
+    it('Shopsモデルを返却する', async () => {
+      const expected = mockShop;
+
+      const actual = await controller.create(1, createShopDto);
+
+      expect(actual).toEqual(expected);
+    });
   });
 
   describe('findAll', () => {
     it('サービスのfindAllメソッドが呼ばれること', () => {
       controller.findAll(1);
       expect(service.findAll).toHaveBeenCalled();
+    });
+
+    it('Shopsモデルの配列を返却する', async () => {
+      const expected = [mockShop];
+
+      const actual = await controller.findAll(1);
+
+      expect(actual).toEqual(expected);
     });
   });
 
@@ -62,16 +82,32 @@ describe('ShopsController', () => {
       controller.findOne(1);
       expect(service.findOne).toHaveBeenCalled();
     });
+
+    it('Shopsモデルを返却する', async () => {
+      const expected = mockShop;
+
+      const actual = await controller.findOne(1);
+
+      expect(actual).toEqual(expected);
+    });
   });
 
   describe('update', () => {
     const updateShopDto: UpdateShopDto = {
-      name: '小田和正',
+      name: '結束バンド',
     };
 
     it('サービスのupdateメソッドが呼ばれること', () => {
       controller.update(1, updateShopDto);
       expect(service.update).toHaveBeenCalled();
+    });
+
+    it('Shopsモデルを返却する', async () => {
+      const expected = mockShop;
+
+      const actual = await controller.update(1, updateShopDto);
+
+      expect(actual).toEqual(expected);
     });
   });
 
