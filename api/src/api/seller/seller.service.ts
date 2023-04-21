@@ -8,7 +8,7 @@ import { Injectable } from '@nestjs/common';
 export class SellersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByUserAndShop({ userId, shopId }: { userId: number; shopId: number }) {
+  async findByUserAndShop({ userId, shopId }: { userId: number; shopId: number }): Promise<SellerModel | null> {
     const seller = await this.prisma.seller.findUnique({
       where: {
         userId_shopId: {
