@@ -52,11 +52,6 @@ paths:
       description: 物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。
       parameters:
         - *ref_0
-        - name: x-user-id
-          required: true
-          in: header
-          schema:
-            type: string
         - name: shopId
           required: true
           in: path
@@ -79,11 +74,6 @@ paths:
       description: 物販を更新します。更新できる物販はカレントユーザーが販売者として所属するものに限ります。
       parameters:
         - *ref_0
-        - name: x-user-id
-          required: true
-          in: header
-          schema:
-            type: string
         - name: shopId
           required: true
           in: path
@@ -112,11 +102,6 @@ paths:
       description: 物販を削除します。削除できる物販はカレントユーザーが販売者として所属し、かつオーナー権限を持つものに限ります。
       parameters:
         - *ref_0
-        - name: x-user-id
-          required: true
-          in: header
-          schema:
-            type: string
         - name: shopId
           required: true
           in: path
