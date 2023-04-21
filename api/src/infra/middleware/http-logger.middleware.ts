@@ -3,7 +3,7 @@ import { Injectable, NestMiddleware, Logger } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
 @Injectable()
-export class LoggerMiddleware implements NestMiddleware {
+export class HttpLoggerMiddleware implements NestMiddleware {
   // TODO 自作ロガー入れたら置き換える
   private logger = new Logger('HTTP');
 

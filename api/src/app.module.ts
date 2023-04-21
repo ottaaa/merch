@@ -8,7 +8,7 @@ import { PrismaModule } from 'nestjs-prisma';
 import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
-import { LoggerMiddleware } from './infra/middleware/logger.middleware';
+import { HttpLoggerMiddleware } from './infra/middleware/http-logger.middleware';
 
 @Module({
   imports: [PrismaModule.forRoot(), ShopsModule, SellersModule, AuthorizationModule, AuthenticationModule],
@@ -21,6 +21,6 @@ import { LoggerMiddleware } from './infra/middleware/logger.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(HttpLoggerMiddleware).forRoutes('*');
   }
 }
