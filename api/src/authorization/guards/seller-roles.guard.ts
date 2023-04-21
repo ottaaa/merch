@@ -6,6 +6,7 @@ import {
   ExecutionContext,
   Injectable,
   InternalServerErrorException,
+  Logger,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -18,13 +19,17 @@ import { SellersService } from '../../api/seller/seller.service';
  */
 @Injectable()
 export class SellerRolesGuard implements CanActivate {
+  private logger = new Logger();
   constructor(private reflector: Reflector, private readonly sellersService: SellersService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredRole = this.reflector.getAllAndOverride<Role>('role', [context.getHandler(), context.getClass()]);
+    const requiredRole: Role | undefined = this.reflector.getAllAndOverride<Role>('role', [
+      context.getHandler(),
+      context.getClass(),
+    ]);
     // @SellerRole が設定されてないのにガードが呼び出されちゃってるパターン
-    // TODO 500以外で検討
     if (!requiredRole) {
+      this.logger.error('requiredRoleが未定義');
       throw new InternalServerErrorException();
     }
 
@@ -35,7 +40,6 @@ export class SellerRolesGuard implements CanActivate {
     if (isNaN(userId) || isNaN(shopId)) throw new BadRequestException();
 
     const seller = await this.sellersService.findByUserAndShop({ userId, shopId });
-
     if (!seller) return false;
 
     return seller.hasPermission(requiredRole);
