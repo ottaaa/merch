@@ -1,7 +1,7 @@
 import { AppModule } from './app.module';
 
 import { ValidationPipe } from '@nestjs/common';
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import * as fs from 'fs';
@@ -23,9 +23,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   );
-  const httpAdapter = app.get(HttpAdapterHost);
 
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+  app.useGlobalFilters(new AllExceptionsFilter());
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
