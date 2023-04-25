@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.npm
-          key: ${{ runner.os }}-nestjs-jest-cache-${{ env.nestjs-version }}
+          key: ${{ runner.os }}-nestjs-jest-cache-${{ hashFiles('**/api/package-lock.json') }}
       - name: set up nodejs
         uses: actions/setup-node@v3
         with:
