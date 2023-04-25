@@ -1,0 +1,36 @@
+name: flutter component test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - "mobile/**"
+  push:
+    branches:
+      - "main"
+      - "api/**"
+
+env:
+  nestjs-version: "9.3.9"
+
+jobs:
+  unit_test:
+    runs-on: macos-latest
+    steps:
+      - name: set up repository
+        uses: actions/checkout@v3
+      - name: search nestjs cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-nestjs-jest-cache-${{ env.nestjs-version }}
+      - name: set up nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install packages
+        working-directory: ./api
+        run: npm ci
+      - name: run unit test
+        working-directory: ./api
+        run: npm run test
