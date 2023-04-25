@@ -1,0 +1,38 @@
+name: flutter component test
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    branches:
+      - 'mobile/**'
+  push:
+    branches:
+      - 'main'
+      - 'mobile/**'
+
+env:
+  flutter-version: '3.7.7'
+
+jobs:
+  component_test:
+    runs-on: macos-latest
+    steps:
+      - name: set up repository
+        uses: actions/checkout@v3
+      - name: search flutter cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: ${{ runner.os }}-flutter-install-cache-${{ env.flutter_version }}
+      - name: set up flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.flutter_version }}
+          channel: 'stable'
+      - name: pub get
+        working-directory: ./mobile
+        run: flutter pub get
+      - name: test
+        working-directory: ./mobile
+        run: flutter test
+

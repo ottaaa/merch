@@ -10,5 +10,6 @@
   "moduleNameMapper": {
     "^#/(.*)$": "<rootDir>/$1",
     "^~/(.*)$": "<rootDir>/src/$1"
-  }
+  },
+  "cacheDirectory": "node_modules/.cache/jest"
 }
