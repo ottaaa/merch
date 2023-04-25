@@ -1,0 +1,19 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "testRegex": ".*\\.spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "collectCoverageFrom": [
+    "<rootDir>/src/**/*.(t|j)s",
+    "!**/*.spec.(t|j)s",
+    "!<rootDir>/src/main.ts"
+  ],
+  "coverageDirectory": "./coverage",
+  "testEnvironment": "node",
+  "moduleNameMapper": {
+    "^#/(.*)$": "<rootDir>/$1",
+    "^~/(.*)$": "<rootDir>/src/$1"
+  },
+  "cacheDirectory": "node_modules/.cache/jest"
+}
