@@ -54,8 +54,8 @@ model User {
 model Authentication {
   id             Int      @id @default(autoincrement())
   passwordDigest String   @db.Char(64)
-  user           User     @relation(fields: [userId], references: [id])
   userId         Int      @unique
+  user           User     @relation(fields: [userId], references: [id])
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -72,9 +72,9 @@ model Shop {
 
 model Seller {
   id        Int      @id @default(autoincrement())
+  role      Role     @default(USER)
   userId    Int
   shopId    Int
-  role      Role     @default(USER)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
@@ -92,9 +92,9 @@ model Merch {
   isPinning      Boolean      @default(false)
   shopId         Int
   salesTaxRateId Int
-  categories     Category[]
   shop           Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
   salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
+  categories     Category[]
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   deletedAt      DateTime?
@@ -103,9 +103,9 @@ model Merch {
 model Category {
   id         Int          @id @default(autoincrement())
   category   String       @default("__default")
-  stock      Stock[]
   merchId    Int
   merch      Merch        @relation(fields: [merchId], references: [id], onDelete: Cascade)
+  stock      Stock[]
   SaleDetail SaleDetail[]
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
@@ -127,8 +127,8 @@ model Sale {
   note        String
   soldAt      DateTime     @default(now())
   shopId      Int
-  SaleDetails SaleDetail[]
   shop        Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  SaleDetails SaleDetail[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
@@ -138,21 +138,23 @@ model SaleDetail {
   price      Int // 税込価格
   soldPrice  Int // 実際に売った時の価格
   quantity   Int
-  categoryId Int
   saleId     Int
-  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
   sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id])
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
 
 model SalesTaxRate {
   id               Int              @id @default(autoincrement())
-  rate             Decimal
   salesTaxCategory SalesTaxCategory
+  rate             Decimal
   from             DateTime
   to               DateTime
   Merch            Merch[]
+
+  @@unique([salesTaxCategory, from, to])
 }
 
 enum Role {
