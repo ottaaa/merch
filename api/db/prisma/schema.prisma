@@ -84,18 +84,20 @@ model Seller {
 }
 
 model Merch {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String
-  price       Int
-  image       String
-  isPinning   Boolean    @default(false)
-  shopId      Int        @map("shop_id")
-  categories  Category[]
-  shop        Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  createdAt   DateTime   @default(now()) @map("created_at")
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  deletedAt   DateTime?  @map("deleted_at")
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  price          Int // 税抜価格
+  image          String
+  isPinning      Boolean      @default(false)
+  shopId         Int          @map("shop_id")
+  salesTaxRateId Int
+  categories     Category[]
+  shop           Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
+  createdAt      DateTime     @default(now()) @map("created_at")
+  updatedAt      DateTime     @updatedAt @map("updated_at")
+  deletedAt      DateTime?    @map("deleted_at")
 }
 
 model Category {
@@ -133,7 +135,7 @@ model Sale {
 
 model SaleDetail {
   id         Int      @id @default(autoincrement())
-  price      Int
+  price      Int // 税込価格
   soldPrice  Int      @map("sold_price") // 実際に売った時の価格
   quantity   Int
   categoryId Int      @map("category_id")
@@ -142,6 +144,15 @@ model SaleDetail {
   sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+}
+
+model SalesTaxRate {
+  id               Int              @id @default(autoincrement())
+  rate             Decimal
+  salesTaxCategory SalesTaxCategory
+  from             DateTime
+  to               DateTime
+  Merch            Merch[]
 }
 
 enum Role {
@@ -154,4 +165,10 @@ enum StockType {
   GIVE
   STOCK_UP
   LOST
+}
+
+enum SalesTaxCategory {
+  REGULAR // 通常税率
+  REDUCED // 軽減税率
+  FREE // 非課税
 }
