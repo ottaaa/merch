@@ -85,10 +85,11 @@ model Seller {
 
 model Merch {
   id          Int        @id @default(autoincrement())
-  uuid        String     @default(uuid()) @db.Uuid
   name        String
   description String
+  price       Int
   image       String
+  isPinning   Boolean    @default(false)
   shopId      Int        @map("shop_id")
   categories  Category[]
   shop        Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
@@ -100,7 +101,6 @@ model Merch {
 model Category {
   id         Int          @id @default(autoincrement())
   category   String       @default("__default")
-  price      Int
   stock      Stock[]
   merchId    Int          @map("merch_id")
   merch      Merch        @relation(fields: [merchId], references: [id], onDelete: Cascade)
@@ -122,6 +122,7 @@ model Stock {
 
 model Sale {
   id          Int          @id @default(autoincrement())
+  note        String
   soldAt      DateTime     @default(now()) @map("sold_at")
   shopId      Int          @map("shop_id")
   SaleDetails SaleDetail[]
@@ -132,6 +133,8 @@ model Sale {
 
 model SaleDetail {
   id         Int      @id @default(autoincrement())
+  price      Int
+  soldPrice  Int      @map("sold_price") // 実際に売った時の価格
   quantity   Int
   categoryId Int      @map("category_id")
   saleId     Int      @map("sale_id")
