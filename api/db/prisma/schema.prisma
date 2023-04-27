@@ -47,30 +47,38 @@ model User {
   name           String
   authentication Authentication?
   sellers        Seller[]
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
 }
 
 model Authentication {
-  id             Int    @id @default(autoincrement())
-  passwordDigest String @map("password_digest") @db.Char(64)
-  user           User   @relation(fields: [userId], references: [id])
-  userId         Int    @unique
+  id             Int      @id @default(autoincrement())
+  passwordDigest String   @map("password_digest") @db.Char(64)
+  user           User     @relation(fields: [userId], references: [id])
+  userId         Int      @unique
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 }
 
 model Shop {
-  id      Int      @id @default(autoincrement())
-  name    String
-  merchs  Merch[]
-  sellers Seller[]
-  sales   Sale[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  merchs    Merch[]
+  sellers   Seller[]
+  sales     Sale[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 }
 
 model Seller {
-  id     Int  @id @default(autoincrement())
-  userId Int  @map("user_id")
-  shopId Int  @map("shop_id")
-  role   Role @default(USER)
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shop   Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  shopId    Int      @map("shop_id")
+  role      Role     @default(USER)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@unique([userId, shopId])
 }
@@ -84,7 +92,9 @@ model Merch {
   shopId      Int        @map("shop_id")
   categories  Category[]
   shop        Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  deletedAt   DateTime?  @default(now())
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  deletedAt   DateTime?  @map("deleted_at")
 }
 
 model Category {
@@ -95,15 +105,18 @@ model Category {
   merchId    Int          @map("merch_id")
   merch      Merch        @relation(fields: [merchId], references: [id], onDelete: Cascade)
   SaleDetail SaleDetail[]
+  createdAt  DateTime     @default(now()) @map("created_at")
+  updatedAt  DateTime     @updatedAt @map("updated_at")
 }
 
 model Stock {
   id         Int       @id @default(autoincrement())
   quantity   Int
   type       StockType
-  createdAt  DateTime  @default(now()) @map("created_at")
   categoryId Int       @map("category_id")
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
 }
 
 model Sale {
@@ -112,6 +125,8 @@ model Sale {
   shopId      Int          @map("shop_id")
   SaleDetails SaleDetail[]
   shop        Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
 }
 
 model SaleDetail {
@@ -121,6 +136,8 @@ model SaleDetail {
   saleId     Int
   category   Category @relation(fields: [categoryId], references: [id])
   sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
 }
 
 enum Role {
