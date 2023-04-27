@@ -55,7 +55,7 @@ model Authentication {
   id             Int      @id @default(autoincrement())
   passwordDigest String   @map("password_digest") @db.Char(64)
   user           User     @relation(fields: [userId], references: [id])
-  userId         Int      @unique
+  userId         Int      @unique @map("user_id")
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 }
@@ -134,7 +134,7 @@ model SaleDetail {
   id         Int      @id @default(autoincrement())
   quantity   Int
   categoryId Int      @map("category_id")
-  saleId     Int
+  saleId     Int      @map("sale_id")
   category   Category @relation(fields: [categoryId], references: [id])
   sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now()) @map("created_at")
