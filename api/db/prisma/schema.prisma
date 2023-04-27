@@ -47,17 +47,17 @@ model User {
   name           String
   authentication Authentication?
   sellers        Seller[]
-  createdAt      DateTime        @default(now()) @map("created_at")
-  updatedAt      DateTime        @updatedAt @map("updated_at")
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Authentication {
   id             Int      @id @default(autoincrement())
-  passwordDigest String   @map("password_digest") @db.Char(64)
+  passwordDigest String   @db.Char(64)
   user           User     @relation(fields: [userId], references: [id])
-  userId         Int      @unique @map("user_id")
-  createdAt      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  userId         Int      @unique
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Shop {
@@ -66,19 +66,19 @@ model Shop {
   merchs    Merch[]
   sellers   Seller[]
   sales     Sale[]
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Seller {
   id        Int      @id @default(autoincrement())
-  userId    Int      @map("user_id")
-  shopId    Int      @map("shop_id")
+  userId    Int
+  shopId    Int
   role      Role     @default(USER)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, shopId])
 }
@@ -90,60 +90,60 @@ model Merch {
   price          Int // 税抜価格
   image          String
   isPinning      Boolean      @default(false)
-  shopId         Int          @map("shop_id")
+  shopId         Int
   salesTaxRateId Int
   categories     Category[]
   shop           Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
   salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
-  createdAt      DateTime     @default(now()) @map("created_at")
-  updatedAt      DateTime     @updatedAt @map("updated_at")
-  deletedAt      DateTime?    @map("deleted_at")
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
 }
 
 model Category {
   id         Int          @id @default(autoincrement())
   category   String       @default("__default")
   stock      Stock[]
-  merchId    Int          @map("merch_id")
+  merchId    Int
   merch      Merch        @relation(fields: [merchId], references: [id], onDelete: Cascade)
   SaleDetail SaleDetail[]
-  createdAt  DateTime     @default(now()) @map("created_at")
-  updatedAt  DateTime     @updatedAt @map("updated_at")
-  deletedAt  DateTime?    @map("deleted_at")
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
 }
 
 model Stock {
   id         Int       @id @default(autoincrement())
   quantity   Int
   type       StockType
-  categoryId Int       @map("category_id")
+  categoryId Int
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  createdAt  DateTime  @default(now()) @map("created_at")
-  updatedAt  DateTime  @updatedAt @map("updated_at")
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Sale {
   id          Int          @id @default(autoincrement())
   note        String
-  soldAt      DateTime     @default(now()) @map("sold_at")
-  shopId      Int          @map("shop_id")
+  soldAt      DateTime     @default(now())
+  shopId      Int
   SaleDetails SaleDetail[]
   shop        Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  createdAt   DateTime     @default(now()) @map("created_at")
-  updatedAt   DateTime     @updatedAt @map("updated_at")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model SaleDetail {
   id         Int      @id @default(autoincrement())
   price      Int // 税込価格
-  soldPrice  Int      @map("sold_price") // 実際に売った時の価格
+  soldPrice  Int // 実際に売った時の価格
   quantity   Int
-  categoryId Int      @map("category_id")
-  saleId     Int      @map("sale_id")
+  categoryId Int
+  saleId     Int
   category   Category @relation(fields: [categoryId], references: [id])
   sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model SalesTaxRate {
