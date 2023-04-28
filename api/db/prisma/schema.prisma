@@ -33,12 +33,12 @@ datasource db {
 }
 
 // er図生成
-// generator erd {
-//   provider                  = "prisma-erd-generator"
-//   output                    = "./scheme.md"
-//   theme                     = "forest"
-//   includeRelationFromFields = true
-// }
+generator erd {
+  provider                  = "prisma-erd-generator"
+  output                    = "./scheme.md"
+  theme                     = "forest"
+  includeRelationFromFields = true
+}
 
 model User {
   id             Int             @id @default(autoincrement())
@@ -134,28 +134,30 @@ model Sale {
 }
 
 model SaleDetail {
-  id               Int              @id @default(autoincrement())
-  price            Int // 税込価格
-  soldPrice        Int // 実際に売った時の価格
-  salesTaxCategory SalesTaxCategory
-  quantity         Int
-  saleId           Int
-  categoryId       Int
-  sale             Sale             @relation(fields: [saleId], references: [id], onDelete: Cascade)
-  category         Category         @relation(fields: [categoryId], references: [id])
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  id             Int          @id @default(autoincrement())
+  price          Int // 税込価格
+  soldPrice      Int // 実際に売った時の価格
+  quantity       Int
+  saleId         Int
+  categoryId     Int
+  salesTaxRateId Int
+  sale           Sale         @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  category       Category     @relation(fields: [categoryId], references: [id])
+  salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 }
 
 model SalesTaxRate {
   id               Int              @id @default(autoincrement())
   salesTaxCategory SalesTaxCategory
   rate             Decimal
-  from             DateTime
-  to               DateTime
+  start            DateTime
+  end              DateTime
   Merch            Merch[]
+  SaleDetail       SaleDetail[]
 
-  @@unique([salesTaxCategory, from, to])
+  @@unique([salesTaxCategory, start, end])
 }
 
 enum Role {
