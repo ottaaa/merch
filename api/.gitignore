@@ -5,3 +5,4 @@ dist
 docs
 _gen
 coverage
+db/prisma/scheme.md
