@@ -10,6 +10,5 @@ COPY --chown=node:node package*.json /app/api/
 
 USER node
 RUN npm ci
-RUN npm run prisma:gen
 
 CMD [ "npm", "run", "start:dev"]
