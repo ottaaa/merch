@@ -10,17 +10,17 @@ prisma.scheme から client を生成する
 ホスト側でコードを触る場合はホストでも実行する必要あり
 
 ```bash
-docker compose exec nest yarn prisma generate
+docker compose exec nest npm run prisma generate
 ```
 
 api/prisma/schema.prisma の内容を DB に反映する（開発用）
 
 ```bash
-docker compose exec nest yarn prisma db push
+docker compose exec nest npm run prisma db push
 ```
 
 api/prisma/schema.prisma の内容を DB に反映する（マイグレーション）
 
 ```bash
-docker compose exec nest yarn prisma migrate dev --name <任意のマイグレーション名>
+docker compose exec nest npm run prisma migrate dev --name <任意のマイグレーション名>
 ```
