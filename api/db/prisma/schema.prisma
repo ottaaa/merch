@@ -2,6 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 generator docs {
   provider = "node node_modules/prisma-docs-generator"
   output   = "../../docs/prisma"
@@ -26,11 +31,6 @@ generator docs {
 //   entitySuffix                    = "Entity"
 //   fileNamingStyle                 = "camel"
 // }
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
 
 // er図生成
 generator erd {
