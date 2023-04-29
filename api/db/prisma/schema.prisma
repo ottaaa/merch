@@ -156,8 +156,6 @@ model SalesTaxRate {
   end              DateTime
   Merch            Merch[]
   SaleDetail       SaleDetail[]
-
-  @@unique([salesTaxCategory, start, end])
 }
 
 enum Role {
