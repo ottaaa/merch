@@ -9,4 +9,5 @@ COPY --chown=node:node package*.json /app/api/
 RUN npm install
 RUN npm run prisma:gen
 
+USER node
 CMD [ "npm", "run", "start:dev"]
