@@ -23,14 +23,14 @@ async function main() {
     },
   });
 
-  await prisma.merch.create({
-    data: {
-      name: 'T-Shirt',
-      description: '2023年Tシャツ',
-      image: 'image',
-      shopId: shop.id,
-    },
-  });
+  // await prisma.merch.create({
+  //   data: {
+  //     name: 'T-Shirt',
+  //     description: '2023年Tシャツ',
+  //     image: 'image',
+  //     shopId: shop.id,
+  //   },
+  // });
 }
 
 main()

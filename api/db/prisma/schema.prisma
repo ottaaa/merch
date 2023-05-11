@@ -2,6 +2,11 @@ generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 generator docs {
   provider = "node node_modules/prisma-docs-generator"
   output   = "../../docs/prisma"
@@ -27,100 +32,129 @@ generator docs {
 //   fileNamingStyle                 = "camel"
 // }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 // er図生成
-// generator erd {
-//   provider                  = "prisma-erd-generator"
-//   output                    = "../docs/scheme/scheme.md"
-//   theme                     = "forest"
-//   includeRelationFromFields = true
-// }
+generator erd {
+  provider                  = "prisma-erd-generator"
+  output                    = "./scheme.md"
+  theme                     = "forest"
+  includeRelationFromFields = true
+}
 
 model User {
   id             Int             @id @default(autoincrement())
-  code           String          @unique @db.VarChar(255)
   email          String          @unique @db.VarChar(255)
   name           String
   authentication Authentication?
   sellers        Seller[]
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
 }
 
 model Authentication {
-  id             Int    @id @default(autoincrement())
-  passwordDigest String @map("password_digest") @db.Char(64)
-  user           User   @relation(fields: [userId], references: [id])
-  userId         Int    @unique
+  id             Int      @id @default(autoincrement())
+  passwordDigest String   @db.Char(64)
+  userId         Int      @unique
+  user           User     @relation(fields: [userId], references: [id])
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Shop {
-  id      Int      @id @default(autoincrement())
-  name    String
-  merchs  Merch[]
-  sellers Seller[]
-  sales   Sale[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  merchs    Merch[]
+  sellers   Seller[]
+  sales     Sale[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Seller {
-  id     Int  @id @default(autoincrement())
-  userId Int  @map("user_id")
-  shopId Int  @map("shop_id")
-  role   Role @default(USER)
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  shop   Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  id        Int      @id @default(autoincrement())
+  role      Role     @default(USER)
+  userId    Int
+  shopId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shop      Shop     @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([userId, shopId])
 }
 
 model Merch {
-  id          Int        @id @default(autoincrement())
-  uuid        String     @default(uuid()) @db.Uuid
-  name        String
-  description String
-  image       String
-  shopId      Int        @map("shop_id")
-  categories  Category[]
-  shop        Shop       @relation(fields: [shopId], references: [id], onDelete: Cascade)
-  deletedAt   DateTime?  @default(now())
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String
+  price          Int // 税抜価格
+  image          String
+  isPinning      Boolean      @default(false)
+  shopId         Int
+  salesTaxRateId Int
+  shop           Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
+  categories     Category[]
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  deletedAt      DateTime?
 }
 
 model Category {
   id         Int          @id @default(autoincrement())
   category   String       @default("__default")
-  price      Int
-  stock      Stock[]
-  merchId    Int          @map("merch_id")
+  merchId    Int
   merch      Merch        @relation(fields: [merchId], references: [id], onDelete: Cascade)
+  stock      Stock[]
   SaleDetail SaleDetail[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  deletedAt  DateTime?
 }
 
 model Stock {
   id         Int       @id @default(autoincrement())
   quantity   Int
   type       StockType
-  createdAt  DateTime  @default(now()) @map("created_at")
-  categoryId Int       @map("category_id")
+  categoryId Int
   category   Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
 
 model Sale {
   id          Int          @id @default(autoincrement())
-  soldAt      DateTime     @default(now()) @map("sold_at")
-  shopId      Int          @map("shop_id")
-  SaleDetails SaleDetail[]
+  note        String
+  soldAt      DateTime     @default(now())
+  shopId      Int
   shop        Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  SaleDetails SaleDetail[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 model SaleDetail {
-  id         Int      @id @default(autoincrement())
-  quantity   Int
-  categoryId Int      @map("category_id")
-  saleId     Int
-  category   Category @relation(fields: [categoryId], references: [id])
-  sale       Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  id             Int          @id @default(autoincrement())
+  price          Int // 税込価格
+  soldPrice      Int // 実際に売った時の価格
+  quantity       Int
+  saleId         Int
+  categoryId     Int
+  salesTaxRateId Int
+  sale           Sale         @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  category       Category     @relation(fields: [categoryId], references: [id])
+  salesTaxRate   SalesTaxRate @relation(fields: [salesTaxRateId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model SalesTaxRate {
+  id               Int              @id @default(autoincrement())
+  salesTaxCategory SalesTaxCategory
+  rate             Decimal
+  start            DateTime
+  end              DateTime
+  Merch            Merch[]
+  SaleDetail       SaleDetail[]
 }
 
 enum Role {
@@ -129,8 +163,14 @@ enum Role {
 }
 
 enum StockType {
-  SELL
-  GIVE
-  STOCK_UP
+  SOLD
+  GAVE
+  STOCKED_UP
   LOST
+}
+
+enum SalesTaxCategory {
+  REGULAR // 通常税率
+  REDUCED // 軽減税率
+  FREE // 非課税
 }
