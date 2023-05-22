@@ -4,11 +4,7 @@
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
   },
-  "collectCoverageFrom": [
-    "<rootDir>/src/**/*.(t|j)s",
-    "!**/*.spec.(t|j)s",
-    "!<rootDir>/src/main.ts"
-  ],
+  "collectCoverageFrom": ["<rootDir>/src/**/*.(t|j)s", "!**/*.spec.(t|j)s", "!<rootDir>/src/main.ts"],
   "coverageDirectory": "./coverage",
   "testEnvironment": "node",
   "moduleNameMapper": {

@@ -16,18 +16,21 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js', 'dist'],
   rules: {
+    '@typescript-eslint/ban-types': [
+      'error',
+      {
+        types: {
+          Function: false,
+        },
+        extendDefaults: true,
+      },
+    ],
     'object-shorthand': 'warn',
     'no-useless-constructor': 'off',
     'import/order': [
       'warn',
       {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['parent', 'sibling', 'index', 'object'],
-          'type',
-        ],
+        groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index', 'object'], 'type'],
         pathGroups: [
           {
             pattern: '{#,.*}/**/*.interface',
@@ -35,7 +38,7 @@ module.exports = {
             position: 'before',
           },
           {
-            pattern: '**/models/*',
+            pattern: '{#,.*}/**/*.model',
             group: 'builtin',
             position: 'before',
           },
