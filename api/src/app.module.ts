@@ -9,9 +9,10 @@ import { ClassSerializerInterceptor, MiddlewareConsumer, Module, NestModule } fr
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 import { HttpLoggerMiddleware } from './infra/middleware/http-logger.middleware';
+import { MerchsModule } from './api/merchs/merchs.module';
 
 @Module({
-  imports: [PrismaModule.forRoot(), ShopsModule, SellersModule, AuthorizationModule, AuthenticationModule],
+  imports: [PrismaModule.forRoot(), ShopsModule, SellersModule, AuthorizationModule, AuthenticationModule, MerchsModule],
   providers: [
     {
       provide: APP_INTERCEPTOR,
