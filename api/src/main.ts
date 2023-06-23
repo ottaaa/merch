@@ -1,6 +1,6 @@
 import { AppModule } from './app.module';
 
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -38,5 +38,7 @@ async function bootstrap() {
   fs.writeFileSync('./swagger-spec.yaml', dump(document, {}));
 
   await app.listen(3000);
+
+  Logger.log('Nest Application started on ');
 }
 bootstrap();

@@ -114,6 +114,20 @@ paths:
         '400':
           description: ''
       tags: *ref_1
+  /api/shops/{shopId}/merchs:
+    get:
+      operationId: MerchsController_findAll
+      parameters:
+        - name: x-user-id
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Merch / マーチ
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
