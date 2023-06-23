@@ -10,5 +10,7 @@
       "~/*": ["./src/*"]
     },
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": ["src/**/*", "tests/**/*", "db/**/*"],
+  "exclude": ["node_modules", "dist", "src/_gen/**/*"]
 }
