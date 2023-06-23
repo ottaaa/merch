@@ -1,5 +1,11 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ShopModel } from '#/src/models/shop.model';
+
+import { CreateShopDto } from '../shops/dto/create-shop.dto';
+
+import { Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
 
 @Controller('shops/:shopId/merchs')
 @ApiTags('Merch / マーチ')
@@ -9,8 +15,21 @@ import { ApiHeader, ApiTags } from '@nestjs/swagger';
   example: 1,
 })
 export class MerchsController {
-  @Get()
+  @Post('')
+  @UseGuards(UserIdGuard)
+  @ApiOperation({
+    summary: 'マーチを作成する',
+    description: 'マーチを作成します。',
+  })
+  @ApiBody({ type: CreateShopDto })
+  @ApiCreatedResponse({ type: ShopModel })
+  @ApiBadRequestResponse()
+  async create() {
+    return 'create';
+  }
+
+  @Get('')
   async findAll() {
-    return 'test';
+    return 'findAll';
   }
 }

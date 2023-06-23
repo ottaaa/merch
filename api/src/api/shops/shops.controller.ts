@@ -49,7 +49,6 @@ export class ShopsController {
 
   @Post('')
   @UseGuards(UserIdGuard)
-  @HttpCode(201)
   @ApiOperation({
     summary: '物販を作成する',
     description: '物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。',
