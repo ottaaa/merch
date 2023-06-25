@@ -1,6 +1,6 @@
 import { SellerModel } from '#/src/models/seller.model';
 
-import { SellersService } from '#/src/api/seller/seller.service';
+import { SellersService } from '#/src/api/sellers/sellers.service';
 
 import { Role } from '@prisma/client';
 

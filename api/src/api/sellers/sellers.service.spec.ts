@@ -1,4 +1,4 @@
-import { SellersService } from './seller.service';
+import { SellersService } from './sellers.service';
 
 import { PrismaService } from 'nestjs-prisma';
 
