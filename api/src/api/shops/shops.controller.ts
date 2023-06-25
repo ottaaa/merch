@@ -66,7 +66,7 @@ export class ShopsController {
     summary: '物販のリストを取得する',
     description: 'カレントユーザーが販売者として所属する物販のリストを取得します。',
   })
-  @ApiOkResponse({ type: ShopModel })
+  @ApiOkResponse({ type: [ShopModel] })
   @ApiBadRequestResponse()
   async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
     return await this.shopsService.findAll(userId);

@@ -15,7 +15,8 @@ import { Request } from 'express';
 import { SellersService } from '../../api/sellers/sellers.service';
 
 /**
- * 販売者ロールのガード
+ * 販売者ロールのガード。
+ * 販売者のロール判定と存在判定を行う。
  */
 @Injectable()
 export class SellerRolesGuard implements CanActivate {

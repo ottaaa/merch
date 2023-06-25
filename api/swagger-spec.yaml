@@ -41,7 +41,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShopModel'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ShopModel'
         '400':
           description: ''
       tags: *ref_1
@@ -117,17 +119,81 @@ paths:
   /api/shops/{shopId}/merchs:
     get:
       operationId: MerchsController_findAll
+      summary: マーチのリストを取得する
+      description: マーチのリストを取得します。
       parameters:
-        - name: x-user-id
+        - &ref_2
+          name: x-user-id
           in: header
           description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
             type: string
+        - name: cursor
+          required: true
+          in: query
+          description: ページネーションのカーソル。API は cursor で渡された値より後のレコードを返します
+          example: '2023-06-25T04:04:14.118Z'
+          schema:
+            default: '1'
+            type: string
+        - name: cursorField
+          required: true
+          in: query
+          description: カーソルで指定するフィールド
+          example: createdAt
+          schema:
+            default: id
+            type: string
+        - name: take
+          required: false
+          in: query
+          description: 取得件数
+          example: 50
+          schema:
+            maximum: 200
+            default: 20
+            type: number
+        - name: sortBy
+          required: false
+          in: query
+          description: ソート
+          example: asc
+          schema:
+            default: asc
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
-      tags:
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MerchModel'
+        '400':
+          description: ''
+      tags: &ref_3
         - Merch / マーチ
+  /api/shops/{shopId}/merchs/{merchId}:
+    get:
+      operationId: MerchsController_findOne
+      summary: 指定のマーチを取得する
+      description: 指定のマーチを1つ取得します。
+      parameters:
+        - *ref_2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MerchModel'
+        '400':
+          description: ''
+      tags: *ref_3
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
@@ -167,3 +233,31 @@ components:
           minLength: 1
           maxLength: 128
           example: 放課後ティータイム
+    MerchModel:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        image:
+          type: string
+        isPinning:
+          type: boolean
+        shopId:
+          type: number
+        salesTaxRateId:
+          type: number
+        shop:
+          $ref: '#/components/schemas/ShopModel'
+      required:
+        - name
+        - description
+        - price
+        - image
+        - isPinning
+        - shopId
+        - salesTaxRateId
+        - shop

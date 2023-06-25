@@ -1,10 +1,8 @@
-import { Shop } from '@prisma/client';
-
 import { ApiProperty } from '@nestjs/swagger';
 
-import { PrismaObjectToEntity, Fields } from './types/model.type';
+import { Fields } from './types/model.type';
 
-export class ShopModel implements PrismaObjectToEntity<Shop> {
+export class ShopModel {
   @ApiProperty({ example: 1 })
   readonly id?: number;
 

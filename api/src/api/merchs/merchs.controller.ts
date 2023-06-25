@@ -1,11 +1,15 @@
-import { ShopModel } from '#/src/models/shop.model';
+import { MerchModel } from '#/src/models/merch.model';
 
-import { CreateShopDto } from '../shops/dto/create-shop.dto';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 
-import { Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBody, ApiCreatedResponse, ApiHeader, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiHeader, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { Role } from '.prisma/client';
 
 import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
+import { SellerRole } from '#/src/authorization/decorators/seller-role.decorator';
+import { SellerRolesGuard } from '#/src/authorization/guards/seller-roles.guard';
 
 @Controller('shops/:shopId/merchs')
 @ApiTags('Merch / マーチ')
@@ -15,21 +19,31 @@ import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
   example: 1,
 })
 export class MerchsController {
-  @Post('')
+  @Get('')
+  @SellerRole(Role.USER)
+  @UseGuards(SellerRolesGuard)
   @UseGuards(UserIdGuard)
   @ApiOperation({
-    summary: 'マーチを作成する',
-    description: 'マーチを作成します。',
+    summary: 'マーチのリストを取得する',
+    description: 'マーチのリストを取得します。',
   })
-  @ApiBody({ type: CreateShopDto })
-  @ApiCreatedResponse({ type: ShopModel })
+  @ApiOkResponse({ type: [MerchModel] })
   @ApiBadRequestResponse()
-  async create() {
-    return 'create';
+  async findAll(@Query() query: PaginationQueryDto) {
+    return query;
   }
 
-  @Get('')
-  async findAll() {
+  @Get(':merchId')
+  @SellerRole(Role.USER)
+  @UseGuards(SellerRolesGuard)
+  @UseGuards(UserIdGuard)
+  @ApiOperation({
+    summary: '指定のマーチを取得する',
+    description: '指定のマーチを1つ取得します。',
+  })
+  @ApiOkResponse({ type: MerchModel })
+  @ApiBadRequestResponse()
+  async findOne() {
     return 'findAll';
   }
 }
