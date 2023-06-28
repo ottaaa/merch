@@ -2,31 +2,33 @@ import { ShopModel } from './shop.model';
 
 import { ApiProperty } from '@nestjs/swagger';
 
+import { Exclude } from 'class-transformer';
+
 import { Fields } from './types/model.type';
 
 export class MerchModel {
-  @ApiProperty()
+  @ApiProperty({ example: 'Tシャツ2023' })
   name!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: '2023年のTシャツ' })
   description!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 2500 })
   price!: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'https://static.bucket/path' })
   image!: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: true })
   isPinning!: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   shopId!: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   salesTaxRateId!: number;
 
-  @ApiProperty()
+  @Exclude()
   shop!: ShopModel;
 
   constructor(props: Fields<MerchModel>) {

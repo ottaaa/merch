@@ -1,6 +1,6 @@
-import { MerchModel } from '#/src/models/merch.model';
-
-import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
+import { ResponseMerchListDto } from './dto/response/response-merch-list.dto';
+import { ResponseMerchDto } from './dto/response/response-merch.dto';
+import { QueryPaginationDto } from '../common/dto/request/query-pagination.dto';
 
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiHeader, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -27,10 +27,10 @@ export class MerchsController {
     summary: 'マーチのリストを取得する',
     description: 'マーチのリストを取得します。',
   })
-  @ApiOkResponse({ type: [MerchModel] })
+  @ApiOkResponse({ type: ResponseMerchListDto })
   @ApiBadRequestResponse()
-  async findAll(@Query() query: PaginationQueryDto) {
-    return query;
+  async findAll(@Query() pagination: QueryPaginationDto) {
+    return pagination;
   }
 
   @Get(':merchId')
@@ -41,7 +41,7 @@ export class MerchsController {
     summary: '指定のマーチを取得する',
     description: '指定のマーチを1つ取得します。',
   })
-  @ApiOkResponse({ type: MerchModel })
+  @ApiOkResponse({ type: ResponseMerchDto })
   @ApiBadRequestResponse()
   async findOne() {
     return 'findAll';

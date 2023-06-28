@@ -1,5 +1,5 @@
-import { CreateShopDto } from './dto/create-shop.dto';
-import { UpdateShopDto } from './dto/update-shop.dto';
+import { CreateShopDto } from './dto/request/create-shop.dto';
+import { UpdateShopDto } from './dto/request/update-shop.dto';
 
 import { PrismaService } from 'nestjs-prisma';
 
