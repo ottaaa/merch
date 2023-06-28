@@ -2,6 +2,7 @@ import { ShopModel } from '#/src/models/shop.model';
 
 import { CreateShopDto } from './dto/request/create-shop.dto';
 import { UpdateShopDto } from './dto/request/update-shop.dto';
+import { QueryPaginationDto } from '../common/dto/request/query-pagination.dto';
 
 import { AuthorizationModule } from '#/src/authorization/authorization.module';
 
@@ -12,6 +13,11 @@ import { ShopsController } from './shops.controller';
 import { Test, TestingModule } from '@nestjs/testing';
 
 const mockShop = new ShopModel({ id: 1, name: '結束バンド' });
+
+const mockPaginationDto: QueryPaginationDto = {
+  take: 200,
+  sortBy: 'asc',
+};
 
 const shopsServiceProvider = {
   provide: ShopsService,
@@ -64,14 +70,14 @@ describe('ShopsController', () => {
 
   describe('findAll', () => {
     it('サービスのfindAllメソッドが呼ばれること', () => {
-      controller.findAll(1);
+      controller.findAll(1, mockPaginationDto);
       expect(service.findAll).toHaveBeenCalled();
     });
 
     it('Shopsモデルの配列を返却する', async () => {
       const expected = [mockShop];
 
-      const actual = await controller.findAll(1);
+      const actual = await controller.findAll(1, mockPaginationDto);
 
       expect(actual).toEqual(expected);
     });

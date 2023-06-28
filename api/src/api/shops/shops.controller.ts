@@ -2,6 +2,7 @@ import { CreateShopDto } from './dto/request/create-shop.dto';
 import { UpdateShopDto } from './dto/request/update-shop.dto';
 import { ResponseShopListDto } from './dto/response/response-shop-list.dto';
 import { ResponseShopDto } from './dto/response/response-shop.dto';
+import { QueryPaginationDto } from '../common/dto/request/query-pagination.dto';
 
 import { ShopsService } from './shops.service';
 
@@ -18,6 +19,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -70,7 +72,7 @@ export class ShopsController {
   })
   @ApiOkResponse({ type: ResponseShopListDto })
   @ApiBadRequestResponse()
-  async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
+  async findAll(@UserId() userId: number, @Query() pagination: QueryPaginationDto): Promise<ShopModel[] | null> {
     return await this.shopsService.findAll(userId);
   }
 

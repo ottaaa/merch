@@ -35,6 +35,34 @@ paths:
       description: カレントユーザーが販売者として所属する物販のリストを取得します。
       parameters:
         - *ref_0
+        - name: cursor
+          required: false
+          in: query
+          description: ページネーションのカーソル。API は cursor で渡されたidより後のレコードを返します
+          example: 34
+          schema:
+            default: 1
+            type: number
+        - name: take
+          required: false
+          in: query
+          description: 取得件数
+          example: 50
+          schema:
+            maximum: 1000
+            default: 200
+            type: number
+        - name: sortBy
+          required: false
+          in: query
+          description: ソート
+          example: asc
+          schema:
+            default: asc
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
@@ -220,6 +248,15 @@ components:
           $ref: '#/components/schemas/ShopModel'
       required:
         - shop
+    ResponsePaginationDto:
+      type: object
+      properties:
+        cursor:
+          type: number
+          description: ページネーションのカーソル
+          example: 34
+      required:
+        - cursor
     ResponseShopListDto:
       type: object
       properties:
@@ -227,8 +264,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ShopModel'
+        pagination:
+          $ref: '#/components/schemas/ResponsePaginationDto'
       required:
         - shops
+        - pagination
     UpdateShopDto:
       type: object
       properties:
@@ -269,15 +309,6 @@ components:
         - isPinning
         - shopId
         - salesTaxRateId
-    ResponsePaginationDto:
-      type: object
-      properties:
-        cursor:
-          type: number
-          description: ページネーションのカーソル
-          example: 34
-      required:
-        - cursor
     ResponseMerchListDto:
       type: object
       properties:
