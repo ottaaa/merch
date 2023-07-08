@@ -89,6 +89,7 @@ model Merch {
   price          Int // 税抜価格
   image          String
   isPinning      Boolean      @default(false)
+  isDisplay      Boolean      @default(true)
   shopId         Int
   salesTaxRateId Int
   shop           Shop         @relation(fields: [shopId], references: [id], onDelete: Cascade)

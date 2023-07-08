@@ -154,6 +154,14 @@ paths:
           description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
           schema:
             type: string
+        - name: isDisplay
+          required: false
+          in: query
+          description: trueの場合、表示設定がされているマーチのみを返します。
+          example: false
+          schema:
+            default: false
+            type: boolean
         - name: cursor
           required: false
           in: query

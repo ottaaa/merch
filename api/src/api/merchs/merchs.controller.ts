@@ -10,6 +10,7 @@ import { Role } from '.prisma/client';
 import { UserIdGuard } from '#/src/authentication/guards/user-id.guard';
 import { SellerRole } from '#/src/authorization/decorators/seller-role.decorator';
 import { SellerRolesGuard } from '#/src/authorization/guards/seller-roles.guard';
+import { QueryMerchListDto } from './dto/response/request-merch-list.dto';
 
 @Controller('shops/:shopId/merchs')
 @ApiTags('Merch / マーチ')
@@ -29,7 +30,7 @@ export class MerchsController {
   })
   @ApiOkResponse({ type: ResponseMerchListDto })
   @ApiBadRequestResponse()
-  async findAll(@Query() pagination: QueryPaginationDto) {
+  async findAll(@Query() query: QueryMerchListDto, @Query() pagination: QueryPaginationDto) {
     return pagination;
   }
 
