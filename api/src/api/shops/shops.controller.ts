@@ -1,5 +1,8 @@
-import { CreateShopDto } from './dto/create-shop.dto';
-import { UpdateShopDto } from './dto/update-shop.dto';
+import { CreateShopDto } from './dto/request/create-shop.dto';
+import { UpdateShopDto } from './dto/request/update-shop.dto';
+import { ResponseShopListDto } from './dto/response/response-shop-list.dto';
+import { ResponseShopDto } from './dto/response/response-shop.dto';
+import { QueryPaginationDto } from '../common/dto/request/query-pagination.dto';
 
 import { ShopsService } from './shops.service';
 
@@ -16,6 +19,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -49,13 +53,12 @@ export class ShopsController {
 
   @Post('')
   @UseGuards(UserIdGuard)
-  @HttpCode(201)
   @ApiOperation({
     summary: '物販を作成する',
     description: '物販を作成します。カレントユーザーを物販のオーナー販売者として設定します。',
   })
   @ApiBody({ type: CreateShopDto })
-  @ApiCreatedResponse({ type: ShopModel })
+  @ApiCreatedResponse({ type: ResponseShopDto })
   @ApiBadRequestResponse()
   async create(@UserId() userId: number, @Body() body: CreateShopDto): Promise<ShopModel> {
     return this.shopsService.create(body, userId);
@@ -67,9 +70,9 @@ export class ShopsController {
     summary: '物販のリストを取得する',
     description: 'カレントユーザーが販売者として所属する物販のリストを取得します。',
   })
-  @ApiOkResponse({ type: ShopModel })
+  @ApiOkResponse({ type: ResponseShopListDto })
   @ApiBadRequestResponse()
-  async findAll(@UserId() userId: number): Promise<ShopModel[] | null> {
+  async findAll(@UserId() userId: number, @Query() pagination: QueryPaginationDto): Promise<ShopModel[] | null> {
     return await this.shopsService.findAll(userId);
   }
 
@@ -81,7 +84,7 @@ export class ShopsController {
     description: '物販を1つ取得します。取得できる物販はカレントユーザーが販売者として所属するものに限ります。',
   })
   @ApiParam({ name: 'shopId', example: 1 })
-  @ApiOkResponse({ type: ShopModel })
+  @ApiOkResponse({ type: ResponseShopDto })
   @ApiBadRequestResponse()
   async findOne(
     @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number
@@ -98,7 +101,7 @@ export class ShopsController {
   })
   @ApiParam({ name: 'shopId', example: 2 })
   @ApiBody({ type: UpdateShopDto })
-  @ApiOkResponse({ type: ShopModel })
+  @ApiOkResponse({ type: ResponseShopDto })
   @ApiBadRequestResponse()
   async update(
     @Param('shopId', new ParseIntPipe({ errorHttpStatusCode: HttpStatus.BAD_REQUEST })) id: number,

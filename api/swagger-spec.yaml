@@ -24,7 +24,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShopModel'
+                $ref: '#/components/schemas/ResponseShopDto'
         '400':
           description: ''
       tags: &ref_1
@@ -35,13 +35,41 @@ paths:
       description: カレントユーザーが販売者として所属する物販のリストを取得します。
       parameters:
         - *ref_0
+        - name: cursor
+          required: false
+          in: query
+          description: ページネーションのカーソル。API は cursor で渡されたidより後のレコードを返します
+          example: 34
+          schema:
+            default: 1
+            type: number
+        - name: take
+          required: false
+          in: query
+          description: 取得件数
+          example: 50
+          schema:
+            maximum: 1000
+            default: 200
+            type: number
+        - name: sortBy
+          required: false
+          in: query
+          description: ソート
+          example: asc
+          schema:
+            default: asc
+            enum:
+              - asc
+              - desc
+            type: string
       responses:
         '200':
           description: ''
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShopModel'
+                $ref: '#/components/schemas/ResponseShopListDto'
         '400':
           description: ''
       tags: *ref_1
@@ -64,7 +92,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShopModel'
+                $ref: '#/components/schemas/ResponseShopDto'
         '400':
           description: ''
       tags: *ref_1
@@ -92,7 +120,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShopModel'
+                $ref: '#/components/schemas/ResponseShopDto'
         '400':
           description: ''
       tags: *ref_1
@@ -114,6 +142,82 @@ paths:
         '400':
           description: ''
       tags: *ref_1
+  /api/shops/{shopId}/merchs:
+    get:
+      operationId: MerchsController_findAll
+      summary: マーチのリストを取得する
+      description: マーチのリストを取得します。
+      parameters:
+        - &ref_2
+          name: x-user-id
+          in: header
+          description: 認証モジュールを実装したら代わりにAuthorizationヘッダーにトークンを載せて送ってもらう予定
+          schema:
+            type: string
+        - name: isDisplay
+          required: false
+          in: query
+          description: trueの場合、表示設定がされているマーチのみを返します。
+          example: false
+          schema:
+            default: false
+            type: boolean
+        - name: cursor
+          required: false
+          in: query
+          description: ページネーションのカーソル。API は cursor で渡されたidより後のレコードを返します
+          example: 34
+          schema:
+            default: 1
+            type: number
+        - name: take
+          required: false
+          in: query
+          description: 取得件数
+          example: 50
+          schema:
+            maximum: 1000
+            default: 200
+            type: number
+        - name: sortBy
+          required: false
+          in: query
+          description: ソート
+          example: asc
+          schema:
+            default: asc
+            enum:
+              - asc
+              - desc
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMerchListDto'
+        '400':
+          description: ''
+      tags: &ref_3
+        - Merch / マーチ
+  /api/shops/{shopId}/merchs/{merchId}:
+    get:
+      operationId: MerchsController_findOne
+      summary: 指定のマーチを取得する
+      description: 指定のマーチを1つ取得します。
+      parameters:
+        - *ref_2
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseMerchDto'
+        '400':
+          description: ''
+      tags: *ref_3
 info:
   title: 物販(仮) Document
   description: 物販(仮) の API リファレンスです
@@ -145,6 +249,34 @@ components:
       required:
         - id
         - name
+    ResponseShopDto:
+      type: object
+      properties:
+        shop:
+          $ref: '#/components/schemas/ShopModel'
+      required:
+        - shop
+    ResponsePaginationDto:
+      type: object
+      properties:
+        cursor:
+          type: number
+          description: ページネーションのカーソル
+          example: 34
+      required:
+        - cursor
+    ResponseShopListDto:
+      type: object
+      properties:
+        shops:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShopModel'
+        pagination:
+          $ref: '#/components/schemas/ResponsePaginationDto'
+      required:
+        - shops
+        - pagination
     UpdateShopDto:
       type: object
       properties:
@@ -153,3 +285,54 @@ components:
           minLength: 1
           maxLength: 128
           example: 放課後ティータイム
+    MerchModel:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Tシャツ2023
+        description:
+          type: string
+          example: 2023年のTシャツ
+        price:
+          type: number
+          example: 2500
+        image:
+          type: string
+          example: https://static.bucket/path
+        isPinning:
+          type: boolean
+          example: true
+        shopId:
+          type: number
+          example: 1
+        salesTaxRateId:
+          type: number
+          example: 1
+      required:
+        - name
+        - description
+        - price
+        - image
+        - isPinning
+        - shopId
+        - salesTaxRateId
+    ResponseMerchListDto:
+      type: object
+      properties:
+        merchs:
+          type: array
+          items:
+            $ref: '#/components/schemas/MerchModel'
+        pagination:
+          $ref: '#/components/schemas/ResponsePaginationDto'
+      required:
+        - merchs
+        - pagination
+    ResponseMerchDto:
+      type: object
+      properties:
+        merch:
+          $ref: '#/components/schemas/MerchModel'
+      required:
+        - merch

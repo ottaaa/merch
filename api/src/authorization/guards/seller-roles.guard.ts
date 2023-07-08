@@ -12,10 +12,11 @@ import { Reflector } from '@nestjs/core';
 
 import { Request } from 'express';
 
-import { SellersService } from '../../api/seller/seller.service';
+import { SellersService } from '../../api/sellers/sellers.service';
 
 /**
- * 販売者ロールのガード
+ * 販売者ロールのガード。
+ * 販売者のロール判定と存在判定を行う。
  */
 @Injectable()
 export class SellerRolesGuard implements CanActivate {

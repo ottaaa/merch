@@ -1,4 +1,4 @@
-import { SellersModule } from '../api/seller/sellers.module';
+import { SellersModule } from '../api/sellers/sellers.module';
 
 import { Module } from '@nestjs/common';
 
